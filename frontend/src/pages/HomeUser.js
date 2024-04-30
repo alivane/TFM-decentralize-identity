@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import OfferForm from '../components/OfferForm';
 import GetCurrency from '../components/GetCurrency';
 import ListCurrencies from '../components/ListCurrencies';
-import Navbar from '../components/Navbar';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,7 +46,6 @@ function PageWithButtonsAndInputs() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Navbar />
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="I want to offer currency" {...a11yProps(0)} />

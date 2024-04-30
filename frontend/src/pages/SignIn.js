@@ -1,147 +1,150 @@
-// SignIn.js
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, TextField, Typography, Container } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
+import {
+  Typography, 
+  Box, 
+  Container, 
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { getFileContentFromIPFS } from '../api';
-import { decryptRSA } from '../components/cryptoFunctions';
-import Loader from "../components/Loader";
-import AlarmMessage from "../components/AlarmMessage"
+
+import { generateRandomCode, verifySignature } from "../api";
+import FooterSteps from "../components/FooterSteps";
+import ErrorComponent from "../components/ErrorComponent";
+import SuccessComponent from "../components/SuccessComponent";
+import SignUpLink from "../components/SignUpLink";
+import ProcessChallenge from "../components/ProcessChallenge";
+import Logo from '../components/Logo';
+import { SIGNIN_STEPS, VERIFY_CODE_PROCESS } from '../utils/constants'
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    // marginTop: theme.spacing(4),
+    textAlign: 'center',
     width: '100%',
     height: "100vh",
     display: "flex!important",
     flexDirection: "column",
     justifyContent: "center",
   },
-  form: {
-    width: '100%',
-    display: "flex",
-    flexDirection: "column"
-  },
   button: {
     margin: "2% auto!important",
     padding: "20px !important",
     width: "100%"
   },
-  submit: {
-    // margin: theme.spacing(3, 0, 2),
+  containerDialog: {
+    textAlign: 'center',
+    display: "flex!important",
+    justifyContent: "center",
+    alignItems: "center"
   },
+  icon: {
+    // marginRight: "1%",
+  },
+  display: {
+    display:"flex"
+  }
 }));
+
 function SignIn() {
   const classes = useStyles();
-  const [ipfsHash, setIpfsHash] = useState("");
-  const [privateCode, setPrivateCode] = useState("");
-  const [response, setResponse] = useState(null);
-  const [showAlarm, setShowAlarm] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
-  const navigate = useNavigate();
+
+  const [verify, setVerify] = useState({ code: 0 });
+  const [errorResponse, setErrorResponse] = useState(false);
+  const [successResponse, setSuccessResponse] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
 
-  const handleSubmit = async() => {
-    setLoading(true);
-    if (response) {
-      const resolvePrivateCode = decryptRSA(process.env.REACT_APP_PRIVATE_KEY, response.privateCodeWeb);
-
-      if (resolvePrivateCode === privateCode) {
-        navigate('/home');
-      } else {
-        setShowAlarm(true);
-      }
-
-    }
-    setLoading(false);
-    
-  }
-
-  const handleNextStep = async () => {
-    setLoading(true);
-    try {
-      // console.log(`${process.env.REACT_APP_GATEWAY_URL}/ipfs/${ipfsHash}`)
-      const resData = await getFileContentFromIPFS(ipfsHash);
-      const jsonString = JSON.parse(resData);
-      setResponse(jsonString);
-      setStep(2);
-    } catch (error) {
-      console.log("Error: ", error)
-    }
-    setLoading(false);
-  }
-
-  return (
-    <Container className={classes.container} component="main" maxWidth="xs">
-      <AlarmMessage
-        open={showAlarm} 
-        onClose={() => setShowAlarm(false) }
-        message={"The private code does not match"}
-      />
-      <Typography variant="h4">Sign In</Typography>
-      { loading && <Loader />}
-      <form className={classes.form} noValidate>
-        {
-          step === 1 ? (
-            <div>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="hash"
-                label="HASH Address"
-                name="hash"
-                autoComplete="false"
-                autoFocus
-                value={ipfsHash}
-                onChange={(event) => setIpfsHash(event.target.value)}
-              />
-              <Button
-                // type="submit"
-                fullWidth
-                disabled={!ipfsHash || loading}
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleNextStep}
-              >
-                Next
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="privateCode"
-                label="Private Code"
-                name="PrivateCode"
-                autoComplete="false"
-                autoFocus
-                value={privateCode}
-                onChange={(event) => setPrivateCode(event.target.value)}
-              />
-              <Button
-                // type="submit"
-                fullWidth
-                disabled={privateCode.length === 0 || loading}
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleSubmit}
-              >
-                Sign In
-              </Button>
-            </div>
-          )
+  useEffect(() => {
+    if (verify.code === VERIFY_CODE_PROCESS[0]) {
+      async function fetchData() {
+        try {
+          const resData = await generateRandomCode();
+          setVerify({
+            code: VERIFY_CODE_PROCESS[1],
+            data: {
+              fileContent: resData
+            }
+          });
+          setActiveStep(1);
+        } catch (error) {
+          setErrorResponse(error.toString());
+          setActiveStep(0);
+          setVerify({ code: 0 });
         }
-        <Typography variant="body2">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
-        </Typography>
-      </form>
+      }
+      fetchData();
+    }
+
+
+    if (verify.code === VERIFY_CODE_PROCESS[2]) {
+      async function fetchData() {
+        try {
+          const resData = await verifySignature(
+            true,
+            verify.data.fileContent,
+            verify.data.signature,
+            verify.data.publicKey,
+          );
+          setVerify({
+            code: VERIFY_CODE_PROCESS[3],
+            data: {
+              ...verify.data,
+              cid: resData.data.cid,
+              did: resData.data.did,
+            }
+          });
+          
+          setSuccessResponse(resData.message);
+          setErrorResponse(false);
+          setActiveStep(2);
+        } catch (error) {
+          setActiveStep(1);
+          setErrorResponse(error.toString());
+        }
+      }
+      fetchData();
+      
+    }
+  }, [verify]);
+
+  
+  return (
+    <Container className={classes.container} component="main" maxWidth="md">
+      <Logo/>
+      {
+        errorResponse && (
+          <ErrorComponent errorMessage={errorResponse} />
+        )
+      }
+      {
+        successResponse && (
+          <SuccessComponent successMessage={successResponse} />
+        )
+      }
+      <div>
+        <Typography variant="h4">Login</Typography>
+        
+
+        <Box sx={{
+          p: 3,
+          borderRadius: 2,
+          bgcolor: 'background.default',
+          display: 'grid',
+          gridTemplateColumns: { md: '1fr' },
+          gap: 1,
+        }}>
+        <ProcessChallenge
+          steps={SIGNIN_STEPS}
+          setActiveStep={setActiveStep}
+        />
+        <SignUpLink />
+        <FooterSteps
+          activeStep={activeStep}
+          steps={SIGNIN_STEPS}
+        />
+
+      </Box>
+      </div>
     </Container>
   );
 }

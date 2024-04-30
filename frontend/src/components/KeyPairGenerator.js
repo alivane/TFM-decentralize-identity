@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { encryptRSA, decryptRSA, createRSA } from './cryptoFunctions';
+import { encryptRSA, decryptRSA, createRSA } from '../utils/cryptoFunctions';
 
 function AsymmetricKeyPairGenerator() {
   const [publicKey, setPublicKey] = useState('');

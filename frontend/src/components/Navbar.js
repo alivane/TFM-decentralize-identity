@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem, ListItemIcon, ListItemText, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { Menu as MenuIcon, AccountCircle, Notifications, Settings, Language } from '@mui/icons-material';
+import logo from '../logo.png'; // Import your logo image
+
 
 function Navbar() {
   const theme = useTheme();
+  const color = "#9C27B0";
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,14 +22,14 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ color: color, backgroundColor: 'white', borderColor: color }}>
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            THESIS DECENTRALIZE IDENTITY
+          <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <img src={logo} alt="Logo" style={{ width: 100 }} /> {/* Adjust the height as needed */}
           </Link>
         </Typography>
         {isMobile ? (

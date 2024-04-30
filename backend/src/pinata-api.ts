@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
-import fs from 'fs';
+
 
 interface PinataAPI {
-    pinFileToIPFS(fileContent: Buffer): Promise<string>;
+    pinFileToIPFS(name: string, content: Buffer): Promise<string>;
     createIPNSRecord(cid: string, customName?: string): Promise<string>;
 }
 
-class PinataClient implements PinataAPI {
+export class PinataClient implements PinataAPI {
     private axiosInstance: AxiosInstance;
 
     constructor(apiKey: string, apiSecret: string) {
@@ -20,23 +20,19 @@ class PinataClient implements PinataAPI {
         });
     }
 
-    async pinFileToIPFS(fileContent: any): Promise<string> {
+    async pinFileToIPFS(name: string, content: any): Promise<string> {
       try {
-          // const formData = new FormData();
-          // formData.append('file', file);
-          // console.log(file.files)
-          // formData.append(file.files[0].name, file.files[0]);
-
-          const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+          const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });
             const formData = new FormData();
-            formData.append('file', blob, 'file.txt');
+            formData.append('file', blob, `${name}.json`);
 
           const response = await this.axiosInstance.post('/pinning/pinFileToIPFS', formData, {
               headers: {
                   'Content-Type': 'multipart/form-data'
               }
           });
-          console.log('File pinned to IPFS:', response.data);
+          // console.log('File pinned to IPFS:', response.data.ipfsHash);
+          
           return response.data.IpfsHash;
       } catch (error) {
           console.error('Error pinning file to IPFS:', error);
@@ -80,26 +76,26 @@ class PinataClient implements PinataAPI {
 
 }
 
-const PINATA_KEY = process.env.PINATA_KEY;
-const PINATA_SECRET = process.env.PINATA_SECRET;
+// const PINATA_KEY = process.env.PINATA_KEY || "";
+// const PINATA_SECRET = process.env.PINATA_SECRET || "";
 
-// Example usage:
-async function main() {
-  const pinataClient = new PinataClient(PINATA_KEY, PINATA_SECRET);
-    try {
-        // Read file content from the file system
-        const fileContent = fs.readFileSync('./src/test.txt');
+// // Example usage:
+// async function main() {
+//   const pinataClient = new PinataClient(PINATA_KEY, PINATA_SECRET);
+//     try {
+//         // Read file content from the file system
+//         const fileContent = fs.readFileSync('./src/test.txt');
 
-        // Pin file content to IPFS
-        const fileHash = await pinataClient.pinFileToIPFS(fileContent);
-        console.log('File pinned to IPFS:', fileHash);
+//         // Pin file content to IPFS
+//         const fileHash = await pinataClient.pinFileToIPFS(fileContent);
+//         console.log('File pinned to IPFS:', fileHash);
 
-        // Create IPNS record
-        const ipnsName = await pinataClient.createIPNSRecord(fileHash, "test1");
-        console.log('IPNS record created:', ipnsName);
-    } catch (error) {
-        console.error('An error occurred:', error);
-    }
-}
+//         // Create IPNS record
+//         const ipnsName = await pinataClient.createIPNSRecord(fileHash, "test1");
+//         console.log('IPNS record created:', ipnsName);
+//     } catch (error) {
+//         console.error('An error occurred:', error);
+//     }
+// }
 
-main();
+// main();

@@ -24,7 +24,8 @@ function CopyText({ text }) {
 
   return (
     <div>
-      {`${text.substring(0, 10)}...`}
+      {/* {`${text.substring(0, 10)}...`} */}
+      {text}
       <IconButton
         onClick={handleCopy}
         className={classes.copyButton}

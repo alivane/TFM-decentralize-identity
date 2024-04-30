@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "preserveConstEnums": true,
-    "resolveJsonModule": true,
     "strict": true,
     "target": "esnext",
     "module": "esnext",
@@ -9,10 +8,5 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "downlevelIteration": true
-  },
-  "include": [
-    "./**/*"
-  ],
-  "exclude": [
-  ]
+  }
 }

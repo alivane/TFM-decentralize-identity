@@ -39,15 +39,15 @@ import { DataSource } from 'typeorm'
 
 // npx @veramo/cli config create-secret-key
 // This will be the name for the local sqlite database for demo purposes
-const DATABASE_FILE = process.env.DATABASE_FILE;
+const DATABASE_FILE = process.env.VERAMO_DATABASE_FILE || "";
 
 // You will need to get a project ID from infura https://www.infura.io
-const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID;
+const INFURA_PROJECT_ID = process.env.VERAMO_INFURA_PROJECT_ID || "";
 
 // This will be the secret key for the KMS (replace this with your secret key)
-const KMS_SECRET_KEY = process.env.KMS_SECRET_KEY;
+const KMS_SECRET_KEY = process.env.VERAMO_KMS_SECRET_KEY || "";
 
-
+console.log(DATABASE_FILE, "=DATABASE_FILE")
 const dbConnection = new DataSource({
   type: 'sqlite',
   database: DATABASE_FILE,

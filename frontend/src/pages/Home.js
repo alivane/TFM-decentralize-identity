@@ -2,6 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+// import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions'; // Import the EmojiEmotions icon
+import Logo from "../components/Logo";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px!important",
     width: "80%"
   },
+  welcomeText: {
+    // marginBottom: theme.spacing(4),
+    // color: theme.palette.primary.main, // Set the color to the primary color of your theme
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
 }));
 
 function HomePage() {
@@ -25,15 +35,20 @@ function HomePage() {
 
   return (
     <Container className={classes.container} component="main" maxWidth="md">
-      <Typography variant="h4">Welcome to the HomePage</Typography>
+      <Logo />
+      <Typography variant="h4" className={classes.welcomeText}>
+        Welcome!
+        {/* <EmojiEmotionsIcon className={classes.icon} /> */}
+      </Typography>
       <Button
         variant="contained"
         color="primary"
         className={classes.button}
         component={Link}
         to="/signup"
+        startIcon={<AccountCircleIcon className={classes.icon} />}
       >
-        Register/Generate key
+        Create an Account
       </Button>
       <Button
         variant="contained"
@@ -41,8 +56,9 @@ function HomePage() {
         className={classes.button}
         component={Link}
         to="/signin"
+        startIcon={<LockOpenIcon className={classes.icon} />}
       >
-        Sign In
+        Login
       </Button>
     </Container>
   );
