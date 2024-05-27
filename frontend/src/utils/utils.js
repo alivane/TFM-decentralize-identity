@@ -6,6 +6,10 @@ export const saveToLocalStorage = (key, value) => {
   localStorage.setItem(key, value);
 };
 
+export const clearLocalStorage = () => {
+  localStorage.clear();
+}
+
 // Function to retrieve data from local storage
 export const loadFromLocalStorage = (key) => {
   return localStorage.getItem(key);

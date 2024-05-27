@@ -6,9 +6,9 @@ import QRCode from 'react-qr-code';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { Dialog, DialogContent, DialogActions, DialogTitle, Button, Typography } from '@mui/material';
 import { encode64 } from '../utils/cryptoFunctions';
-import { 
+// import { 
   // encryptDataReduce,
-   getCredential } from '../api';
+  //  getCredential } from '../api';
 import Loader from './Loader';
 import ErrorComponent from "../components/ErrorComponent";
 import CheckboxSelectorVC from './CheckboxSelectorVC';
@@ -40,44 +40,26 @@ const QRCodeDisplay = ({ open, onClose, data, fieldsVC, idVC }) => {
 
   const onGenerateQr = () => {
     // console.log(data, "=data=====================", data[idVC])
-    const id_credential = data[idVC];
-
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // // console.log( "=credential");
-        const credential = await getCredential(id_credential);
-        
-        // console.log(credential, "===credential", id_credential);
-
-        const data = {
-          credential_id: id_credential,
-          share: fields
-        }
-        
-        // console.log(data, "=data")
-        const url = `${window.location.origin}/verify-credentials/${encode64(JSON.stringify(data))}`
-
-        // console.log(url, "=url")
-        setGenerateQr(url);
-        
-      } catch (error) {
-        console.error('Error fetching credential:', error);
-        // console.log(error, "=error")
-        // setErrorResponse(error.toString());
-        setErrorResponse(error.toString());
-      } finally {
-        setLoading(false);
+    if ( data ) {
+      setLoading(true);
+      const id_credential = data[idVC];
+  
+      const credential = {
+        credential_id: id_credential,
+        share: fields
       }
-    };
-
-    fetchData(); // Call the function immediately
-
+      
+      // console.log(data, "=data")
+      const url = `${window.location.origin}/verify-credentials/${encode64(JSON.stringify(credential))}`
+  
+      // console.log(url, "=url")
+      setGenerateQr(url);
+      setLoading(false);
+    }
   }
 
-  const onChangeSelectors = (data) => {
-    const result = Object.keys(data).filter((fieldName) => data[fieldName]);
+  const onChangeSelectors = (value) => {
+    const result = Object.keys(value).filter((fieldName) => value[fieldName]);
     setFields(result);
 
   }

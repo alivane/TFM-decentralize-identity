@@ -25,7 +25,7 @@ import {  loadFromLocalStorage, downloadFile } from '../utils/utils';
 import FileUpload from "../components/FileUpload";
 import { VERIFY_CODE_PROCESS, SIGNITURE_GUIDE_STEPS } from '../utils/constants';
 import GuidedTour from '../components/GuideTour';
-import { useAuth } from './AuthContext';
+// import { useAuth } from './AuthContext';
 import Instruction from './InstructionsSignature';
 
 
@@ -67,9 +67,10 @@ function ProcessChallenge(props) {
   } = props;
 
   const classes = useStyles();
-  const { isLoggedIn, 
-    // login 
-  } = useAuth();
+  // const { 
+  //   // isLoggedIn, 
+  //   // login 
+  // } = useAuth();
   // console.log(isLoggedIn, "=isLoggedIn")
 
   // const [openDialog, setOpenDialog] = useState(false);

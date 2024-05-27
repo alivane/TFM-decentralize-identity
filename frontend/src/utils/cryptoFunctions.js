@@ -53,17 +53,17 @@ const encryptDataSymmetricKey = (symmetricKey, iv, data) => {
   return forge.util.encode64(result);
 }
 
-const decryptedDataSymmetricKey = (symmetricKey, iv, data64) => {
-  const data = forge.util.decode64(data64);
-  // Convert symmetric key to a Forge buffer
-  const decipher = forge.cipher.createDecipher('AES-CTR', symmetricKey);
-  decipher.start({iv: iv});
-  decipher.update(forge.util.createBuffer(data, 'raw'));
+// const decryptedDataSymmetricKey = (symmetricKey, iv, data64) => {
+//   const data = forge.util.decode64(data64);
+//   // Convert symmetric key to a Forge buffer
+//   const decipher = forge.cipher.createDecipher('AES-CTR', symmetricKey);
+//   decipher.start({iv: iv});
+//   decipher.update(forge.util.createBuffer(data, 'raw'));
 
-  const result = decipher.output.getBytes();
+//   const result = decipher.output.getBytes();
   
-  return result;
-}
+//   return result;
+// }
 
 
 // Function to encrypt JSON data with RSA using OAEP padding
@@ -78,7 +78,7 @@ export function encryptData(publicKeyPem, jsonData) {
   const encryptedSymmetricKey = encryptDataAsymmetricKey(publicKeyPem, symmetricKey);
   const encryptediv = encryptDataAsymmetricKey(publicKeyPem, iv);
   
-  const decryptedData = decryptedDataSymmetricKey(symmetricKey, iv, encryptedData)
+  // const decryptedData = decryptedDataSymmetricKey(symmetricKey, iv, encryptedData)
 
   return {
     key: encryptedSymmetricKey,
@@ -204,7 +204,7 @@ export function test() {
   // Recipient 2 decrypts the message with their private key
   const decryptedMessage2 = decryptMessage(publicPrivateKey.PrivateKey1, encryptedMessages[1]);
 
-  // console.log(decryptedMessage1, decryptedMessage2)
+  return (decryptedMessage1, decryptedMessage2);
 
 }
 
@@ -214,6 +214,7 @@ export function examplecreateSignature(t, data) {
   // console.log(data, "=data")
   const signature = crypt.sign(data, 'SHA512');
   // console.log(signature, "=signature")
+  return signature
 }
 
 export function encode64(data) {

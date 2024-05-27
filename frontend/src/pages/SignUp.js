@@ -153,7 +153,7 @@ function SignUp() {
         }}>
 
         {
-          activeStep == 0 ?
+          activeStep === 0 ?
             <Paper elevation={3} sx={{pl:4, pr: 4, pt:10, pb:10}}>    
             <SignupForm
               onClickNext={onClickNext}

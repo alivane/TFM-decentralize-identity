@@ -21,6 +21,7 @@ import {
   searchByCountryAndSellValue,
   getCurrenciesByDid,
   createContractCurrency,
+  getProfileByDid,
   getContractsByDID
  } from "./verification.js"
 import createCredentials from "./create-credential.js";
@@ -271,6 +272,30 @@ app.post('/getDidByPublicKey', async (req: Request, res: Response) => {
       encryptedIV: iv 
     })
     const result = await getDidByPublicKey(message_decrypted);
+
+    return res.status(result[0] as number).json(result[1]);
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+app.post('/getProfileByDid', async (req: Request, res: Response) => {
+  try {
+    // // Get encryptedSymmetricKey and encryptedData from req.body
+    const { key, data, iv } = req.body;
+    // Check if encryptedSymmetricKey and encryptedData are present
+    if (!key || !iv || !data) {
+      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+    }
+
+    const message_decrypted = doubleDecrypt({ 
+      privateKey: APP_PRIVATE_KEY, 
+      encryptedSymmetricKey: key, 
+      encryptedData: data, 
+      encryptedIV: iv 
+    })
+    const result = await getProfileByDid(message_decrypted);
 
     return res.status(result[0] as number).json(result[1]);
   } catch (error) {

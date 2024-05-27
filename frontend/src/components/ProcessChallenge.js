@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState,
+  //  useRef 
+  } from 'react';
 import { useNavigate } from "react-router-dom";
 import forge from 'node-forge';
 import { Button, 
@@ -90,13 +92,15 @@ function ProcessChallenge(props) {
   } = props;
 
   const classes = useStyles();
-  const { isLoggedIn, login } = useAuth();
+  const { 
+    // isLoggedIn,
+     login } = useAuth();
   // console.log(isLoggedIn, "=isLoggedIn")
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogSign, setOpenDialogSign] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFileSign, setSelectedFileSign] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null);
+  // const [selectedFileSign, setSelectedFileSign] = useState(null);
   
   const [verify, setVerify] = useState({ code: 0 });
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,5 @@
 // import { Buffer } from 'buffer';
-import { encryptData, 
+import { decode64, encryptData, 
   // decryptRSA, encode64
  } from "./utils/cryptoFunctions";
 import forge from 'node-forge';
@@ -121,7 +121,7 @@ export const verifySignatureByDid = async (fileContent, signature, did, data={},
     };
     // console.log(body)
     const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
-
+// console.log(body, "=body")
     const response = await fetch(`${API_BASE_URL}/verifySignatureByDid`, {
       method: 'POST',
       headers: {
@@ -350,6 +350,53 @@ export const getValidationVerifiableCredential = async (hash) => {
     }
     // console.log("result", result)
     return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+
+export const getProfileByDid = async (did) => {
+  try {
+    
+    const body = {
+      did: did
+    };
+
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/getProfileByDid`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+
+    const dataDecode = JSON.parse(decode64(result.data));
+    console.log("result", {
+      data: {
+        ...dataDecode
+      },
+  
+    })
+    return {
+      data: {
+        ...dataDecode
+      },
+      success: result.success,
+      message: result.message
+    };
   } catch (error) {
     console.error('Error:', error);
     throw error;

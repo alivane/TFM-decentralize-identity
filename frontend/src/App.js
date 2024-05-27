@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
   
 import Home from './pages/Home';
@@ -8,6 +8,7 @@ import VerifyCredentials from './pages/VerifyCredentials';
 // import About from './About';
 // import Contact from './Contact';
 import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
 import HomeUser from './pages/HomeUser';
 import ScanQr from './pages/ScanQR';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -46,6 +47,12 @@ function App() {
                   path="/home"
                   element={
                     <PrivateRoute isAuthenticated={true} element={HomeUser} 
+                  />}
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute isAuthenticated={true} element={Profile} 
                   />}
                 />
 

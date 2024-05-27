@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, OutlinedInput, InputAdornment, Grid, TextField, MenuItem, Select, FormControl, InputLabel, Typography, Paper } from '@mui/material';
+import { Button, OutlinedInput, 
+  // InputAdornment, 
+  Grid, TextField, MenuItem, Select, FormControl, InputLabel, Typography, Paper } from '@mui/material';
 import { COUNTRIES_LIST, CURRENCY_BY_COUNTRY, SINGLE_CHALLENGE_STEPS } from "../utils/constants";
 import ProcessChallenge from "../components/ProcessChallengeSimple";
 import FooterSteps from "../components/FooterSteps";
 import SuccessComponent from './SuccessComponent';
 import ErrorComponent from "./ErrorComponent";
+import AlarmMessage from "../components/AlarmMessage";
 
 
 
@@ -12,7 +15,7 @@ function OfferForm() {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [countryInputs, setCountryInputs] = useState({});
   const [countryInputsReceive, setCountryInputsReceive] = useState({});
-  const [currencyInputs, setCurrencyInputs] = useState({});
+  // const [currencyInputs, setCurrencyInputs] = useState({});
   const [currencyInputsReceive, setCurrencyInputsReceive] = useState({});
   const [selectedCountry, setSelectedCountry] = useState('');
   const [register, setRegister] = useState(false);
@@ -20,6 +23,7 @@ function OfferForm() {
   const [extraData, setExtraData] = useState({});
   const [errorResponse, setErrorResponse] = useState(false);
   const [successResponse, setSuccessResponse] = useState(false);
+  const [alarm, setAlarm] = useState(null);
 
   const handleCountryChange = (event) => {
     const selected = event.target.value;
@@ -66,25 +70,51 @@ function OfferForm() {
     const data = selectedCountries.map((value, _) => {
       return {
         // index,
-        currency_sell: value,
-        currency_sell_value: countryInputs[value],
-        currency_cost_value: countryInputsReceive[value],
-        currency_cost: currencyInputsReceive[value],
-        country_of_exchange: selectedCountry
+        currency_sell: value || "",
+        currency_sell_value: countryInputs[value] || "",
+        currency_cost_value: countryInputsReceive[value] || "",
+        currency_cost: currencyInputsReceive[value] || "",
+        country_of_exchange: selectedCountry || ""
       };
     });
 
-    // console.log(data)
-    setExtraData(data);
-    setRegister(true);
+    let validated = true;
+    data.forEach(element => {
+      if (
+        element.currency_sell.length === 0 || 
+        element.currency_sell_value.length === 0 ||
+        element.currency_cost_value.length === 0 ||
+        element.currency_cost.length === 0 ||
+        element.country_of_exchange.length === 0
+      ) {
+        validated = false;
+        setAlarm("All fields must be completed.")
+        return false;
+      }
+    });
+    if (validated) {
+      setExtraData(data);
+      setRegister(true);
+    }
   };
 
   useEffect(() => {
-    if (activeStep == 2) {
+    if (activeStep === 2) {
       // console.log("Good!")
       setSuccessResponse("Currencies are registrated!")
+
+      // Reset
+      setSelectedCountries([]);
+      setCountryInputs({});
+      setCountryInputsReceive({});
+      setCurrencyInputsReceive({});
+      setSelectedCountry('');
       setRegister(false);
       setActiveStep(0);
+      setExtraData({});
+      setErrorResponse(false);
+
+      
     }
   }, [activeStep])
 
@@ -92,6 +122,11 @@ function OfferForm() {
 
   return (
     <div>
+      {
+        alarm && (
+          <AlarmMessage open={true} message={alarm} onClose={() => setAlarm(null)}/>
+        )
+      }
       {
         errorResponse && (
           <ErrorComponent errorMessage={errorResponse} onClose={() => setErrorResponse(null)}/>
@@ -172,7 +207,7 @@ function OfferForm() {
                         required
                         style={{ marginTop: '10px' }}
                         InputProps={{
-                          startAdornment: <InputAdornment position="start">{currencyInputs[country]}</InputAdornment>,
+                          // startAdornment: <InputAdornment position="start">{currencyInputs[country]}</InputAdornment>,
                           inputProps: {
                             step: '0.001',
                             min: '0',
@@ -276,7 +311,6 @@ function OfferForm() {
                 </Button>
               </Grid>
             </Grid>
-
           </Paper>
         )
       }

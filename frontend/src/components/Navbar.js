@@ -72,10 +72,13 @@ function Navbar() {
           </>
         ) : (
           <>
+            <Button color="inherit" component={Link} to="/home">
+              Home
+            </Button>
             <Button color="inherit" component={Link} to="/profile">
               Profile
             </Button>
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
               <Notifications />
             </IconButton>
             <IconButton color="inherit">
@@ -83,7 +86,7 @@ function Navbar() {
             </IconButton>
             <IconButton color="inherit">
               <Settings />
-            </IconButton>
+            </IconButton> */}
           </>
         )}
       </Toolbar>

@@ -15,9 +15,9 @@ const Instruction = () => {
   const [expidFileName, setExpidFileName] = useState('EXPID_file_challenge.expid');
   const [outputFileName, setOutputFileName] = useState('signature_output.signed');
 
-  const handleCopy = () => {
-    setOpen(true);
-  };
+  // const handleCopy = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {

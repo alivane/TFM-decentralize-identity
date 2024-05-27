@@ -10,7 +10,9 @@ import {
   Grid,
   Typography
 } from '@mui/material';
-import { containsKeywords, loadFromLocalStorage } from "../utils/utils";
+import { containsKeywords, 
+  // loadFromLocalStorage
+ } from "../utils/utils";
 import LocationSelector from './LocationSelector';
 import { COUNTRIES_LIST_LOCATION, SINGLE_CHALLENGE_STEPS } from "../utils/constants";
 import ProcessChallenge from "../components/ProcessChallengeSimple";
@@ -20,8 +22,9 @@ import TimeSelector from "../components/TimeSelector";
 
 
 const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
+  // const [locationInit, setLocationInit] = useState(COUNTRIES_LIST_LOCATION[data.country_of_exchange]);
+  const locationInit = COUNTRIES_LIST_LOCATION[data.country_of_exchange];
   const [contractDetails, setContractDetails] = useState(`The key word is: ${containsKeywords()} \n I will wait you in ...`);
-  const [locationInit, setLocationInit] = useState(COUNTRIES_LIST_LOCATION[data.country_of_exchange]);
   const [location, setLocation] = useState(null);
 
   const [register, setRegister] = useState(false);
@@ -34,7 +37,7 @@ const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
 
   const handleMakeContract = () => {
     // Logic to create a contract based on the credential and contractDetails
-    const did = loadFromLocalStorage("did");
+    // const did = loadFromLocalStorage("did");
     const contractData = {
       did_seller: data.did_subject,
       id_credential_seller: data.id_credential,
@@ -59,16 +62,18 @@ const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
 
  
   useEffect(() => {
-    if (activeStep == 2) {
-      // console.log("Good!")
-      setSuccessResponse("Contract was created!")
-      setRegister(false);
-      setActiveStep(0);
-      setExtraData(null);
-      onClose();
+    if (activeStep === 2) {
+      return () => {
+        // console.log("Good!")
+        setSuccessResponse("Contract was created!")
+        setRegister(false);
+        setActiveStep(0);
+        setExtraData(null);
+        onClose();
+      }
 
     }
-  }, [activeStep])
+  }, [activeStep, setSuccessResponse, onClose])
 
   
   const handleSelectLocation = (selectedLocation) => {

@@ -62,12 +62,13 @@ const QrReader = () => {
 
     // 🧹 Clean up on unmount.
     // 🚨 This removes the QR Scanner from rendering and using camera when it is closed or removed from the UI.
-    return () => {
+    return () => {    
+    // eslint-disable-next-line 
       if (!videoEl?.current) {
         scanner?.current?.stop();
       }
     };
-  }, []);
+  }, [videoEl]);
 
   // ❌ If "camera" is not allowed in browser permissions, show an alert.
   useEffect(() => {

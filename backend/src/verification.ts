@@ -71,6 +71,29 @@ export const getDidByPublicKey =  async (message_decrypted: any) => {
   ];
 };
 
+export const getProfileByDid =  async (message_decrypted: any) => {
+  // VALIDATE IF PUBLIC KEY IS already REGISTRATED
+  const data = await DataService.getByDid(decode64(message_decrypted.did));
+  //console.log(data, "=message_decrypted", message_decrypted)
+  
+  if (!data) {
+    return [400, { success: false, message: 'The user is not exist' }];
+  }
+  return [
+    200, 
+    { 
+      success: true, 
+      message: 'User Profile',
+      data: encode64(JSON.stringify({ 
+        email: data?.email,
+        name: data?.name,
+        last_name: data?.last_name,
+        document_id: data?.document_id,
+      }))
+    },
+  ];
+};
+
 
 export const createDidUser = async (message_decrypted: any) => {
   // ADD THE DID HERE
