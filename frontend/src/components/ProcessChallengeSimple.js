@@ -116,7 +116,7 @@ function ProcessChallenge(props) {
         } catch (error) {
           setErrorResponse(error.toString());
           setActiveStep(0);
-          // setVerify({ code: 0 });
+          setVerify({ code: 0 });
         } finally {
           setOpenDialogSign(false);
           setLoading(false);

@@ -63,15 +63,14 @@ const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
  
   useEffect(() => {
     if (activeStep === 2) {
-      return () => {
+      // return () => {
         // console.log("Good!")
         setSuccessResponse("Contract was created!")
         setRegister(false);
         setActiveStep(0);
         setExtraData(null);
         onClose();
-      }
-
+      // }
     }
   }, [activeStep, setSuccessResponse, onClose])
 
