@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
-import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
-import Connection from "./Connection";
-import SuccessComponent from './SuccessComponent';
+import QrCode from '@mui/icons-material/QrCode';
+// import Connection from "./Connection";
+// import SuccessComponent from './SuccessComponent';
+import QRCodeDisplay from './QrCodeDisplay';
 
-function RandomTable(props) {
-  const { data } = props;
+function CurrencyExchangeTable(props) {
+  const { data, fieldsVC, idVC } = props;
   const [info, setInfo] = useState(null);
-  const [successResponse, setSuccessResponse] = useState(false);
 
   const handleButtonClick = (rowData) => {
     // Implement your logic when a button in a row is clicked
@@ -18,17 +18,13 @@ function RandomTable(props) {
   return (
     <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
       {
-        successResponse && (
-          <SuccessComponent successMessage={successResponse} onClose={() => setSuccessResponse(false)} />
-        )
-      }
-      {
         info && (
-          <Connection 
-            data={info}
+          <QRCodeDisplay
             open={true}
-            onClose={() => setInfo(null)}
-            setSuccessResponse={setSuccessResponse}  
+            onClose={() => setInfo(null)} 
+            data={info} 
+            fieldsVC={fieldsVC}
+            idVC={idVC}
           />
         )
       }
@@ -40,11 +36,11 @@ function RandomTable(props) {
               <TableCell>Currency</TableCell>
               <TableCell>Cost Value</TableCell>
               <TableCell>Cost</TableCell>
-              <TableCell>Connect</TableCell>
+              <TableCell>Show QR</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {data && data.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell>{row.currency_sell_value}</TableCell>
                   <TableCell>{row.currency_sell}</TableCell>
@@ -55,9 +51,9 @@ function RandomTable(props) {
                       variant="contained" 
                       color="primary" 
                       onClick={() => handleButtonClick(row)}
-                      startIcon={<ConnectWithoutContactIcon />}
+                      startIcon={<QrCode />}
                     >
-                      Connect
+                      Show QR
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -70,4 +66,4 @@ function RandomTable(props) {
   );
 }
 
-export default RandomTable;
+export default CurrencyExchangeTable;

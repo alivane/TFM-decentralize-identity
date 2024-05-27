@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn,
     logout,
     login
-  }), [isLoggedIn]);
+  }), [isLoggedIn, logout, login]);
 
 
   return (

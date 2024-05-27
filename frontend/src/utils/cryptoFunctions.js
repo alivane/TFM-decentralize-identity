@@ -11,7 +11,6 @@ import CryptoJS from 'crypto-js';
 // openssl enc -base64 -in signature.bin -out signature1.bin
 // openssl dgst -sha256 -verify TEST_public.crt -signature signature.bin TEST_EXPID_file_for_sign.expid 
 // REVISAR: https://medium.com/@kaishinaw/signing-and-verifying-ethereum-hashed-messages-fefa46a746f2
-
 const generateRandomString = (length) => {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let result = '';
@@ -196,7 +195,7 @@ export function test() {
   // Encrypt the message for multiple recipients
   const encryptedMessages = encryptMessageForMultipleRecipients(message, publicKeys);
 
-  // console.log(encryptedMessages, "=encryptedMessages")
+  // // console.log(encryptedMessages, "=encryptedMessages")
   // Now you can send each encrypted message to the corresponding recipient
 
   // Recipient 1 decrypts the message with their private key
@@ -205,14 +204,22 @@ export function test() {
   // Recipient 2 decrypts the message with their private key
   const decryptedMessage2 = decryptMessage(publicPrivateKey.PrivateKey1, encryptedMessages[1]);
 
-  console.log(decryptedMessage1, decryptedMessage2)
+  // console.log(decryptedMessage1, decryptedMessage2)
 
 }
 
 export function examplecreateSignature(t, data) {
   const crypt = new JSEncrypt({default_key_size: 2048});
 
-  console.log(data, "=data")
+  // console.log(data, "=data")
   const signature = crypt.sign(data, 'SHA512');
-  console.log(signature, "=signature")
+  // console.log(signature, "=signature")
+}
+
+export function encode64(data) {
+  return forge.util.encode64(data);
+}
+
+export function decode64(data) {
+  return forge.util.decode64(data);
 }

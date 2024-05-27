@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CopyText({ text }) {
+function CopyText({ text, length=0 }) {
   const classes = useStyles();
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -23,9 +23,19 @@ function CopyText({ text }) {
   };
 
   return (
-    <div>
-      {/* {`${text.substring(0, 10)}...`} */}
-      {text}
+    <div
+      style={{ 
+        display: "block",
+        overflow: "hidden",
+        textOverflow: "ellipsis"
+      }}
+    >
+      {
+        length > 0 ?
+          `${text.substring(0, length)}...`
+        :
+          `${text}`
+      }
       <IconButton
         onClick={handleCopy}
         className={classes.copyButton}

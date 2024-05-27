@@ -20,7 +20,7 @@ function AsymmetricKeyPairGenerator() {
 
   const handleCreateRSA = () => {
     const rsa = createRSA();
-    console.log(rsa.PrivateKey, rsa.PublicKey);
+    // console.log(rsa.PrivateKey, rsa.PublicKey);
   }
 
   return (

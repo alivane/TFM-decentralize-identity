@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from 'react';
+// import { Link } from 'react-router-dom';
+import { 
+  // Button, 
+  Container, Typography,
+  //  Paper 
+  } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import LockOpenIcon from '@mui/icons-material/LockOpen';
+// import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions'; // Import the EmojiEmotions icon
+import Logo from "../components/Logo";
+// import GuidedTour from '../components/GuideTour';
+// import { HOME_STEPS } from '../utils/constants';
+import { useParams } from 'react-router-dom';
+import { getValidationVerifiableCredential, getCredential } from '../api';
+// import { Typography, Paper } from '@mui/material';
+// import Loader from '../components/Loader';
+// import ErrorComponent from "../components/ErrorComponent";
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+// import { NAME_FIELDS_VC} from "../utils/constants"
+// import { isSingleWord } from '../utils/utils';
+// import CopyText from '../components/CopyText';
+import { decode64, encode64 } from '../utils/cryptoFunctions';
+import ReaderQr from '../components/ReaderQR';
+
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    // marginTop: theme.spacing(4),
+    textAlign: 'center',
+    width: '100%',
+    height: "100vh",
+    display: "flex!important",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  button: {
+    margin: "2% auto!important",
+    padding: "20px!important",
+    width: "80%"
+  },
+  welcomeText: {
+    // marginBottom: theme.spacing(4),
+    // color: theme.palette.primary.main, // Set the color to the primary color of your theme
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+}));
+
+
+function VerifyCredentials() {
+  const classes = useStyles();
+  const { id } = useParams(); // Get the ID parameter from the URL
+  const [data, setData] = useState(null);
+  const [errorResponse, setErrorResponse] = useState(null);
+
+  useEffect(() => {
+    if (id) {
+      // console.log("id", id)
+      const fetchData = async () => {
+        try {
+          // console.log( "=credential");
+          const hash = JSON.parse(decode64(id));
+          // console.log(hash, "=hash", hash.credential_id)
+          const credential = await getCredential(hash.credential_id);
+          
+          const params = {
+            credential: credential.data,
+            share: hash.share
+          }
+          // console.log(credential, "===credential", credential);
+
+          const result = await getValidationVerifiableCredential(
+            encode64(JSON.stringify(params))
+          );
+          // console.log(result, "====data");
+          setData(result.data)
+        } catch (error) {
+          console.error('Error fetching credential:', error);
+          // console.log(error, "=error")
+          setErrorResponse(error.toString());
+        }
+      };
+  
+      fetchData(); // Call the function immediately
+    }
+  }, [id]); // Include id in the dependency array if it's used inside the effect
+
+
+  return (
+    <Container className={classes.container} component="main" maxWidth="md">
+      <Logo />
+      <Typography variant="h4" className={classes.welcomeText}>
+        Welcome!
+        {/* {id} */}
+        {/* <EmojiEmotionsIcon className={classes.icon} /> */}
+      </Typography>
+      {
+        errorResponse && (
+          <div>We had errors</div>
+        )
+      }
+      {data}
+      <ReaderQr />
+    </Container>
+  );
+}
+// ip route get 1.2.3.4 | awk '{print $7}'
+export default VerifyCredentials;

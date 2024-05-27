@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Container, Typography, Box, IconButton } from '@mui/material';
+import { Button, Container, Typography, Box, 
+  // IconButton 
+} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
@@ -18,7 +20,7 @@ function FileAttachment(props) {
         if (selectedFile) {
             // Handle file upload logic here
             handleSubmission(selectedFile);
-            console.log('Uploading file:', selectedFile);
+            // console.log('Uploading file:', selectedFile);
             // Reset selected file after upload
             setSelectedFile(null);
         } else {

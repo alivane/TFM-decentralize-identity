@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Button, OutlinedInput, Grid, MenuItem, Select, FormControl, InputLabel, Typography, Paper } from '@mui/material';
+import { COUNTRIES_LIST, CURRENCY_BY_COUNTRY } from '../utils/constants';
+import { searchByCountryAndSellValue } from '../api';
 
-function GetCurrency() {
+function GetCurrency(props) {
   const [selectedCurrency, setSelectedCurrency] = useState([]);
-  const [selectedHaveCurrency, setSelectedHaveCurrency] = useState([]);
+  // const [selectedHaveCurrency, setSelectedHaveCurrency] = useState([]);
   const [countryInputs, setCountryInputs] = useState({});
   // const [currencyInputs, setCurrencyInputs] = useState({});
   const [selectedCountry, setSelectedCountry] = useState('');
+
+  const {
+    // data, 
+    setData
+  } = props;
 
   const handleCountryChange = (event) => {
     const selected = event.target.value;
@@ -37,16 +44,35 @@ function GetCurrency() {
     setSelectedCurrency(event.target.value);
   };
 
-  const handleHaveCurrencySelect = (event) => {
-    setSelectedHaveCurrency(event.target.value);
-  };
+  // const handleHaveCurrencySelect = (event) => {
+  //   setSelectedHaveCurrency(event.target.value);
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log('Selected button:', selectedButton);
-    console.log('Selected countries:', selectedCurrency);
-    console.log('Country inputs:', countryInputs);
-    console.log('Selected country:', selectedCountry);
+    // // console.log('Selected button:', selectedButton);
+    // console.log('Selected countries:', selectedCurrency);
+    // console.log('Country inputs:', countryInputs);
+    // console.log('Selected country:', selectedCountry);
+    // console.log("country", selectedCountry);
+    // console.log(selectedCountry,
+      // selectedCurrency)
+
+    async function fetchData() {
+      try {
+        const result = await searchByCountryAndSellValue(
+          {
+            country: selectedCountry,
+            currencies: selectedCurrency
+          }
+        );
+        setData(result.data)
+        // console.log(result, "=resultresult")
+      } catch (error) {
+      } finally {
+      }
+    }
+    fetchData();
   };
 
   return (
@@ -67,7 +93,7 @@ function GetCurrency() {
             input={<OutlinedInput label="Where?" />}
             fullWidth
           >
-            {['JP', 'CN', 'IN', 'AU'].map((country) => (
+            {COUNTRIES_LIST.map((country) => (
               <MenuItem key={country} value={country}>
                 {country}
               </MenuItem>
@@ -90,7 +116,7 @@ function GetCurrency() {
               input={<OutlinedInput label="Currency..." />}
               fullWidth
             >
-              {['USA', 'UK', 'FR', 'DE', 'IT'].map((country) => (
+              {CURRENCY_BY_COUNTRY.map((country) => (
                 <MenuItem key={country} value={country}>
                   {country}
                 </MenuItem>
@@ -98,7 +124,7 @@ function GetCurrency() {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
               I have currencies from ...
           </Typography>
@@ -112,14 +138,14 @@ function GetCurrency() {
               input={<OutlinedInput label="Currency..." />}
               fullWidth
             >
-              {['USA', 'UK', 'FR', 'DE', 'IT'].map((country) => (
+              {CURRENCY_BY_COUNTRY.map((country) => (
                 <MenuItem key={country} value={country}>
                   {country}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </Grid>
+        </Grid> */}
         
         {/* <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import {
   Typography, 
   Box, 
-  Container, 
+  Container,
+  Paper, 
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -14,7 +15,8 @@ import SuccessComponent from "../components/SuccessComponent";
 import SignInLink from "../components/SignInLink";
 import ProcessChallenge from "../components/ProcessChallenge";
 import Logo from '../components/Logo';
-import { SIGNUP_STEPS, VERIFY_CODE_PROCESS } from '../utils/constants'
+import { SIGNUP_STEPS, VERIFY_CODE_PROCESS } from '../utils/constants';
+import SignupForm from '../components/FormSignup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,8 +53,24 @@ function SignUp() {
   const [verify, setVerify] = useState({ code: 0 });
   const [errorResponse, setErrorResponse] = useState(false);
   const [successResponse, setSuccessResponse] = useState(false);
+  // const [dataUserForm, setDataUserForm] = useState({});
   const [activeStep, setActiveStep] = useState(0);
+  const [formValues, setFormValues] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    documentId: '',
+  });
 
+  const updateActiveStep = (value) => {
+    setActiveStep(value+1);
+  }
+
+  const onClickNext = (value) => {
+    // console.log("test", value);
+    // setDataUserForm(value);
+    updateActiveStep(0);
+  }
 
   useEffect(() => {
     if (verify.code === VERIFY_CODE_PROCESS[0]) {
@@ -65,10 +83,10 @@ function SignUp() {
               fileContent: resData
             }
           });
-          setActiveStep(1);
+          updateActiveStep(1);
         } catch (error) {
           setErrorResponse(error.toString());
-          setActiveStep(0);
+          updateActiveStep(0);
           setVerify({ code: 0 });
         }
       }
@@ -96,9 +114,9 @@ function SignUp() {
           
           setSuccessResponse(resData.message);
           setErrorResponse(false);
-          setActiveStep(2);
+          updateActiveStep(2);
         } catch (error) {
-          setActiveStep(1);
+          updateActiveStep(1);
           setErrorResponse(error.toString());
         }
       }
@@ -133,10 +151,23 @@ function SignUp() {
           gridTemplateColumns: { md: '1fr' },
           gap: 1,
         }}>
-        <ProcessChallenge
-          steps={SIGNUP_STEPS} signup={true}
-          setActiveStep={setActiveStep}
-        />
+
+        {
+          activeStep == 0 ?
+            <Paper elevation={3} sx={{pl:4, pr: 4, pt:10, pb:10}}>    
+            <SignupForm
+              onClickNext={onClickNext}
+              setFormValues={setFormValues}
+              formValues={formValues}
+            /> 
+            </Paper>
+          :
+          <ProcessChallenge
+            steps={SIGNUP_STEPS} signup={true}
+            setActiveStep={updateActiveStep}
+            extraData={formValues}
+          />
+        }
         <SignInLink />
         <FooterSteps
           activeStep={activeStep}

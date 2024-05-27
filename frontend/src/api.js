@@ -1,5 +1,7 @@
-import { Buffer } from 'buffer';
-import { encryptData, decryptRSA } from "./utils/cryptoFunctions";
+// import { Buffer } from 'buffer';
+import { encryptData, 
+  // decryptRSA, encode64
+ } from "./utils/cryptoFunctions";
 import forge from 'node-forge';
 const API_BASE_URL = process.env.REACT_APP_ENDPOINT;
 
@@ -70,15 +72,17 @@ export const generateRandomCode = async () => {
 };
 
 
-export const verifySignature = async (signup=false, fileContent, signature, publicKey) => {
+export const verifySignature = async (signup=false, fileContent, signature, publicKey, data={}) => {
   try {
-    
+    // console.log(data, "=data")
     const body = {
       fileContent: fileContent, 
       signature: forge.util.encode64(signature), 
-      publicKey: forge.util.encode64(publicKey) 
+      publicKey: forge.util.encode64(publicKey),
+      data: forge.util.encode64(JSON.stringify(data)),
     };
-
+    // console.log(forge.util.encode64(publicKey) , "=publicKey")
+    // console.log(body)
     const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/verifySignature`, {
@@ -96,7 +100,44 @@ export const verifySignature = async (signup=false, fileContent, signature, publ
     if (!response.ok) {
       throw new Error('Failed to fetch encrypted data');
     }
-    console.log("result", result)
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+export const verifySignatureByDid = async (fileContent, signature, did, data={}, type="offer") => {
+  try {
+    // console.log(data, "=data")
+    const body = {
+      fileContent: fileContent, 
+      signature: forge.util.encode64(signature), 
+      did: forge.util.encode64(did),
+      data: forge.util.encode64(JSON.stringify(data)),
+      type: type,
+    };
+    // console.log(body)
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/verifySignatureByDid`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
     return result;
   } catch (error) {
     console.error('Error:', error);
@@ -129,7 +170,185 @@ export const getPublicKeybyDid = async (did) => {
     if (!response.ok) {
       throw new Error('Failed to fetch encrypted data');
     }
-    console.log("result", result)
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const getListDataByDid = async (data) => {
+  try {
+    
+    const body = {
+      ...data
+    };
+
+    // console.log(body)
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/getListDataByDid`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+export const getDidByPublicKey = async (publicKey) => {
+  try {
+    
+    const body = {
+      publicKey: forge.util.encode64(publicKey)
+    };
+
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/getDidByPublicKey`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+export const searchByCountryAndSellValue = async (data) => {
+  try {
+    
+    const body = {
+     data: data
+    };
+
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/searchByCountryAndSellValue`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+
+// export const encryptDataReduce = (data) => {
+//   const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, data);
+//   // console.log(bodyEncrypted, "=bodyEncrypted")
+//   return encode64(JSON.stringify(bodyEncrypted));
+// }
+
+export const getCredential = async (hash) => {
+  try {
+    
+    const body = {
+      hash: hash
+    };
+
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    // console.log(bodyEncrypted, "bodyEncrypted")
+
+    const response = await fetch(`${API_BASE_URL}/getCredential`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    // console.log("response", "response", response)
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+
+
+export const getValidationVerifiableCredential = async (hash) => {
+  try {
+    
+    const body = {
+      hash: hash
+    };
+
+    // console.log(body, "=body")
+    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/getValidationVerifiableCredential`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    // console.log("response", "response", response)
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+    // console.log("result", result)
     return result;
   } catch (error) {
     console.error('Error:', error);

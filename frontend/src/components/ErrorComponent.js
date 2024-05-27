@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
-function ErrorComponent({ open, errorMessage, onClose }) {
+function ErrorComponent({ open=true, errorMessage, onClose }) {
   return (
     <Modal
       open={open}

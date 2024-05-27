@@ -1,0 +1,29 @@
+1. popup with instructions of openssl to make the signature. OK
+2. did document update. OK
+3. save the data of the user in signup. OK
+4. Make a offer and save in DB for each offer.
+5. Generate a credential for the user + offer (WHEN SAVE SIGN IT)
+data: 
+- currency_offer
+- offer_country
+- currency_cost
+- cost_country
+- country
+- did_subject
+- type: seller
+- id_ipfs
+
+(TO Ensure who is seller with VC and sign with the web)
+
+6. List from the DB the currencies applying the filters (by DB)
+7. click in Connect with the PERSON
+- display a dialog
+- sign it.
+- generate a credential VC.
+--- did: DID did_subject
+--- type: buyer
+--- id_ipfs
+(TO Ensure who is the buyer with VC and sign with the web)
+
+8. upload the code frontend
+9. upload the code backend

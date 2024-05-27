@@ -1,48 +1,55 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-
-
-
 import forge from 'node-forge';
 import { Button, 
   Typography, 
   Box, 
   Container, 
-  Dialog, 
+  // Dialog, 
   Paper,
-  DialogTitle, 
-  DialogContent, 
+  // DialogTitle, 
+  // DialogContent, 
   Tooltip,
   TextField,
   IconButton,
-  DialogActions } from '@mui/material';
+  // DialogActions
+ } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DownloadIcon from '@mui/icons-material/Download';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CreateIcon from '@mui/icons-material/Create';
 import InfoIcon from '@mui/icons-material/Info';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+// import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { 
-  postFileIPFS, 
+  // postFileIPFS, 
   generateRandomCode, 
   verifySignature,
-  getPublicKeybyDid
+  getPublicKeybyDid,
+  getDidByPublicKey
 } from "../api";
 import Loader from "./Loader";
-import FooterSteps from "./FooterSteps";
+// import FooterSteps from "./FooterSteps";
 import ErrorComponent from "./ErrorComponent";
 import SuccessComponent from "./SuccessComponent";
-import SignInLink from "./SignInLink";
+// import SignInLink from "./SignInLink";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import CopyText from "./CopyText";
-import { createRSA, encryptMessageForMultipleRecipients, examplecreateSignature } from '../utils/cryptoFunctions';
-import { saveToLocalStorage, loadFromLocalStorage, downloadFile } from '../utils/utils';
+import { createRSA, 
+  // encryptMessageForMultipleRecipients, 
+  examplecreateSignature } from '../utils/cryptoFunctions';
+import { saveToLocalStorage,
+  //  loadFromLocalStorage, 
+   downloadFile } from '../utils/utils';
 import FileUpload from "../components/FileUpload";
-import { SIGNUP_STEPS, VERIFY_CODE_PROCESS } from '../utils/constants'
+import { 
+  // SIGNUP_STEPS, 
+  VERIFY_CODE_PROCESS, SIGNUP_GUIDE_STEPS, GENERAL_GUIDE_STEPS, SIGNITURE_GUIDE_STEPS } from '../utils/constants';
+import GuidedTour from '../components/GuideTour';
 import { useAuth } from './AuthContext';
+import Instruction from './InstructionsSignature';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,12 +85,13 @@ const useStyles = makeStyles((theme) => ({
 function ProcessChallenge(props) {
   const {
     signup = false,
-    setActiveStep
+    setActiveStep,
+    extraData = {}
   } = props;
 
   const classes = useStyles();
   const { isLoggedIn, login } = useAuth();
-  console.log(isLoggedIn, "=isLoggedIn")
+  // console.log(isLoggedIn, "=isLoggedIn")
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogSign, setOpenDialogSign] = useState(false);
@@ -100,22 +108,22 @@ function ProcessChallenge(props) {
   // const [secretKey, setSecretKey] = useState("");
   const [did, setDid] = useState();
 
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   // State variable to store whether the email is valid or not
-  const [isValidEmail, setIsValidEmail] = useState(null);
+  // const [isValidEmail, setIsValidEmail] = useState(null);
 
   const navegate = useNavigate();
 
 
   // Regular expression for email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Handler function to update email state and validate email format
-  const handleEmailChange = (event) => {
-    const newEmail = event.target.value;
-    setEmail(newEmail);
-    setIsValidEmail(emailRegex.test(newEmail)); // Check if the new email matches the regex
-  };
+  // const handleEmailChange = (event) => {
+  //   const newEmail = event.target.value;
+  //   setEmail(newEmail);
+  //   setIsValidEmail(emailRegex.test(newEmail)); // Check if the new email matches the regex
+  // };
   
 
 
@@ -154,8 +162,9 @@ function ProcessChallenge(props) {
             verify.data.fileContent,
             verify.data.signature,
             verify.data.publicKey,
+            extraData
           );
-          console.log(resData.data, "========")
+          // console.log(resData.data, "========")
           // setResponse(resData);
           if (signup) {
             setVerify({
@@ -168,6 +177,7 @@ function ProcessChallenge(props) {
             });
           } else {
             login();
+            saveToLocalStorage("did", forge.util.encode64(did));
             navegate('/home'); // Redirect to the dashboard after login
           }
           
@@ -185,6 +195,7 @@ function ProcessChallenge(props) {
       fetchData();
       
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verify]);
 
   const triggerProcessSignature = (result) => {
@@ -193,7 +204,7 @@ function ProcessChallenge(props) {
       version: 1,
       publicKey: publicKey,
       signature: binaryString,
-      email: email
+      // email: email
     };
     setVerify({
       code: VERIFY_CODE_PROCESS[2],
@@ -204,19 +215,36 @@ function ProcessChallenge(props) {
     });
   }
 
-  const triggerProcessPublicKey = (result) => {
-    setPublicKey(result);
-    setVerify({
-      code: VERIFY_CODE_PROCESS[0],
-      data: null
-    });
+  const triggerProcessPublicKey = async (value) => {
+
+    try {
+      setPublicKey(value);
+      if (!signup) {
+
+        const result = await getDidByPublicKey(value);
+        setDid(forge.util.decode64(result.data.did));
+      }
+      setVerify({
+        code: VERIFY_CODE_PROCESS[0],
+        data: null
+      });
+    } catch (error) {
+      setErrorResponse(error.toString());
+    }
+
+    
+    // setPublicKey(result);
+    // setVerify({
+    //   code: VERIFY_CODE_PROCESS[0],
+    //   data: null
+    // });
   }
 
 
   const triggerInitProcess = async () => {
     try {
       const result = await getPublicKeybyDid(did);
-      console.log(result.data.publicKey[0], "=============result.data.publicKey[0]")
+      // console.log(result.data.publicKey[0], "=============result.data.publicKey[0]")
       setPublicKey(forge.util.decode64(result.data.publicKey[0]));
       setVerify({
         code: VERIFY_CODE_PROCESS[0],
@@ -263,17 +291,18 @@ function ProcessChallenge(props) {
                   <Button
                     variant="contained"
                     color="secondary"
-                    className={classes.button}
+                    className={`${classes.button} generate_keys`}
                     disabled={loading}
                     onClick={() => createRSA()}
                     startIcon={<DownloadIcon className={classes.icon} />}
                   >
-                    Generate Key Pair (optional)
+                    (optional) Generate Key Pair
                   </Button>
                 ) : (
                   <div>
                   <div className={classes.display}>
                     <TextField
+                      className='enter_did_subject'
                       variant="outlined"
                       margin="normal"
                       fullWidth
@@ -284,7 +313,7 @@ function ProcessChallenge(props) {
                       value={did}
                       onChange={(event) => setDid(event.target.value)}
                     />
-                    <Tooltip title="This is where you can enter your Decentralized Identifier (DID), example: did:ipid:6ffc1def15badd32e5e4e2173be3c407">
+                    <Tooltip title="This is where you can enter your Decentralized Identifier (DID), example: did:key:6ffc1def15badd32e5e4e2173be3c407">
                       <IconButton><InfoIcon /></IconButton>
                     </Tooltip>
                   </div>
@@ -292,7 +321,8 @@ function ProcessChallenge(props) {
                     disabled={!did || did.length < 5}
                     variant="contained"
                     color="secondary"
-                    className={classes.button}
+                    // className={classes.button}
+                    className={`${classes.button} next_did_button`}
                     onClick={() => triggerInitProcess()}
                     startIcon={<ArrowForwardIcon className={classes.icon} />}
                   >
@@ -309,6 +339,12 @@ function ProcessChallenge(props) {
                 setOpenDialog={setOpenDialog}
                 openDialog={openDialog}
               />
+
+            {
+              signup ?
+              <GuidedTour steps={SIGNUP_GUIDE_STEPS} />
+              : <GuidedTour steps={GENERAL_GUIDE_STEPS} />
+            }
             </div>
         )
       }
@@ -328,14 +364,14 @@ function ProcessChallenge(props) {
               
               
                 <Typography variant="h4" color="secondary">Please sign this document with your private key to verify your identity.</Typography>
-                
+                <Instruction />
                 <Button
                     variant="contained"
                     color="secondary"
-                    className={classes.button}
+                    className={`${classes.button} sign_file`}
                     onClick={() => {
-                      downloadFile("EXPID_file_for_sign.expid", response);
-                      console.log("response")
+                      downloadFile("EXPID_file_challenge.expid", response);
+                      // console.log("response")
                       examplecreateSignature("_", response);
                     }}
                     startIcon={<CreateIcon className={classes.icon} />}
@@ -350,13 +386,17 @@ function ProcessChallenge(props) {
                   setLoading={setLoading}
                   loading={loading}
                   binaryFile={true}
-                  typeFile={".p7s,.p7b,.p7m,.signed,.bin,.sha256"}
+                  // typeFile={".p7s,.p7b,.p7m,.signed,.bin,.sha256"}
+                  typeFile={".signed, .bin"}
                   titleButton="(2) Verify Sign!"
+                  classStepButton={`verify_sign`}
                   titleDialog="Do you want to upload this Signature file?"
                   iconButton={<CheckCircleIcon className={classes.icon}/>}
                 />
                   
             </Box>
+
+            <GuidedTour steps={SIGNITURE_GUIDE_STEPS} />
 
           </div>
         )
@@ -383,10 +423,10 @@ function ProcessChallenge(props) {
                     <Typography variant="h4" color="secondary">
                       You are already registered!
                     </Typography>
-                    <Typography variant="h5" color="secondary">
-                      this is your Decentralized identifier, you can enter our page now!
+                    <Typography variant="h6" color="black">
+                      <CopyText text={verify.data.did} length={30} />
+                      (KEEP IT WITH YOU for sign in!)
                     </Typography>
-                    <CopyText text={verify.data.did} />
                   </div>
                 )
               }
@@ -402,6 +442,7 @@ function ProcessChallenge(props) {
         activeStep={activeStep}
         steps={steps}
       /> */}
+      
     </Container>
   );
 }

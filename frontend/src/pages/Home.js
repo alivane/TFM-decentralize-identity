@@ -6,6 +6,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 // import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions'; // Import the EmojiEmotions icon
 import Logo from "../components/Logo";
+import GuidedTour from '../components/GuideTour';
+import { HOME_STEPS } from '../utils/constants';
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,7 +46,7 @@ function HomePage() {
       <Button
         variant="contained"
         color="primary"
-        className={classes.button}
+        className={`${classes.button} create_account_button`}
         component={Link}
         to="/signup"
         startIcon={<AccountCircleIcon className={classes.icon} />}
@@ -53,13 +56,14 @@ function HomePage() {
       <Button
         variant="contained"
         color="secondary"
-        className={classes.button}
+        className={`${classes.button} login_button`}
         component={Link}
         to="/signin"
         startIcon={<LockOpenIcon className={classes.icon} />}
       >
         Login
       </Button>
+      <GuidedTour steps={HOME_STEPS} />
     </Container>
   );
 }

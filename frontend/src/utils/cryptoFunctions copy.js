@@ -77,9 +77,9 @@ export function encryptData(publicKeyPem, jsonData) {
   const encryptedSymmetricKey = encryptDataAsymmetricKey(publicKeyPem, symmetricKey);
   const encryptediv = encryptDataAsymmetricKey(publicKeyPem, iv);
   
-  console.log("==================================")
+  // console.log("==================================")
   const decryptedData = decryptedDataSymmetricKey(symmetricKey, iv, encryptedData)
-  console.log(JSON.parse(decryptedData), "=============decryptedData")
+  // console.log(JSON.parse(decryptedData), "=============decryptedData")
 
   return {
     key: encryptedSymmetricKey,
@@ -164,10 +164,10 @@ export function decryptRSA(privateKey, encryptedSymmetricKey, encryptedData) {
   
 //   // Convert JSON data to string
 //   const jsonString = jsonData;
-//   console.log(jsonData, "=jsonData")
+//   // console.log(jsonData, "=jsonData")
 //   // Encrypt the JSON string with the symmetric key using AES encryption
 //   const encryptedData = CryptoJS.AES.encrypt(jsonString, symmetricKey).toString();
-//   console.log(encryptedData, "=encryptedData")
+//   // console.log(encryptedData, "=encryptedData")
 //   // Encrypt the symmetric key with the RSA public key
 //   const encryptor = new JSEncrypt();
 //   encryptor.setPublicKey(publicKey);
@@ -182,17 +182,17 @@ export function decryptRSA(privateKey, encryptedSymmetricKey, encryptedData) {
 
 
 // export function encryptRSA(publicKey, data) {
-//   console.log(CryptoJS.SHA256(data).toString())
+//   // console.log(CryptoJS.SHA256(data).toString())
 //   const encryptor = new JSEncrypt();
 //   encryptor.setPublicKey(publicKey);
-//   console.log(encryptor.getPublicKey(), data, typeof(data));
+//   // console.log(encryptor.getPublicKey(), data, typeof(data));
 //   return encryptor.encrypt(data);
 // }
 
 // export function decryptRSA(privateKey, encryptedData) {
 //   const decryptor = new JSEncrypt();
 //   decryptor.setPrivateKey(privateKey);
-//   console.log(privateKey,"PRIVATE KEY", encryptedData, decryptor.decrypt(encryptedData))
+//   // console.log(privateKey,"PRIVATE KEY", encryptedData, decryptor.decrypt(encryptedData))
 //   return decryptor.decrypt(encryptedData);
 // }
 
@@ -252,7 +252,7 @@ export function test() {
     PrivateKey1:crypt1.getPrivateKey()
   };
 
-  console.log(JSON.stringify(publicPrivateKey), "=publicPrivateKey")
+  // console.log(JSON.stringify(publicPrivateKey), "=publicPrivateKey")
 
   // Example public keys of recipients
   const publicKeys = [publicPrivateKey.PublicKey, publicPrivateKey.PublicKey1];
@@ -263,7 +263,7 @@ export function test() {
   // Encrypt the message for multiple recipients
   const encryptedMessages = encryptMessageForMultipleRecipients(message, publicKeys);
 
-  console.log(encryptedMessages, "=encryptedMessages")
+  // console.log(encryptedMessages, "=encryptedMessages")
   // Now you can send each encrypted message to the corresponding recipient
 
   // Recipient 1 decrypts the message with their private key
@@ -272,7 +272,7 @@ export function test() {
   // Recipient 2 decrypts the message with their private key
   const decryptedMessage2 = decryptMessage(publicPrivateKey.PrivateKey1, encryptedMessages[1]);
 
-  console.log(decryptedMessage1, decryptedMessage2)
+  // console.log(decryptedMessage1, decryptedMessage2)
 
 }
 
@@ -292,7 +292,7 @@ export function examplecreateSignature(t, data) {
 
   // const privateKey = process.env.REACT_APP_TEST_PRIVATE_KEY;
   // crypt.setPrivateKey(privateKey);
-  // console.log(crypt.getPrivateKey())
+  // // console.log(crypt.getPrivateKey())
   const crypt = new JSEncrypt({default_key_size: 2048});
 
   // const publicPrivateKey = {
@@ -300,9 +300,9 @@ export function examplecreateSignature(t, data) {
   //   PrivateKey:crypt.getPrivateKey()
   // };
 
-  console.log(data, "=data")
+  // console.log(data, "=data")
   const signature = crypt.sign(data, 'SHA512');
-  console.log(signature, "=signature")
+  // console.log(signature, "=signature")
 
   // Create a hash of the data using SHA256
   // const hash = crypto.createHash('sha256').update(data).digest('hex');
@@ -320,17 +320,17 @@ export function examplecreateSignature(t, data) {
 
   // // Sign the hash with the private key
   // const signature = signer.sign(privateKey, 'base64');
-  // console.log(signature, "=signature")
+  // // console.log(signature, "=signature")
   // // Hash the data using SHA256
   // const hash = crypto.SHA256(data);
   
   // // Create a digital signature using the private key
   // const signature = crypto.HmacSHA256(hash, privateKey).toString();
   
-  // console.log(process.env.REACT_APP_TEST_PRIVATE_KEY, "=process.env.REACT_APP_TEST_PRIVATE_KEY", data)
-  // console.log(signature, "=signature")
-  // // const signature = crypt.sign(data, 'sha256');
+  // // console.log(process.env.REACT_APP_TEST_PRIVATE_KEY, "=process.env.REACT_APP_TEST_PRIVATE_KEY", data)
   // // console.log(signature, "=signature")
+  // // const signature = crypt.sign(data, 'sha256');
+  // // // console.log(signature, "=signature")
   // // return signature;
   // // Create a new Blob with the PEM content
   // const blob = new Blob([signature], { type: 'text/plain;charset=utf-8' });

@@ -9,6 +9,8 @@ import { Button,
 import { makeStyles } from '@mui/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+// import { DIALOG_GUIDE_STEPS } from "../utils/constants";
+// import GuidedTour from './GuideTour';
 import Loader from "./Loader";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +40,9 @@ function FileUpload(props) {
     iconButton=false,
     binaryFile=false,
     typeFile=".crt",
-    titleButton="Upload Public key",
+    titleButton="(required) Upload Public key",
     titleDialog="Do you want to Upload Public Key?",
+    classStepButton="upload_public_key",
     setOpenDialog,
     openDialog
   } = props;
@@ -57,6 +60,7 @@ function FileUpload(props) {
     if (selectedFile) {
       setOpenDialog(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFile]);
 
   
@@ -100,7 +104,7 @@ function FileUpload(props) {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={`${classes.button} ${classStepButton}`}
             component="span"
             disabled={loading}
             startIcon={!iconButton ? <CloudUploadIcon className={classes.icon}/> : iconButton}
@@ -129,13 +133,14 @@ function FileUpload(props) {
           )}
         </DialogContent>
         <DialogActions>
-          <Button disabled={loading} onClick={handleDialogClose} color="primary">
+          <Button className="cancel" disabled={loading} onClick={handleDialogClose} color="primary">
             Cancel
           </Button>
-          <Button disabled={loading} onClick={handleUploadCert} color="primary">
+          <Button className="upload" disabled={loading} onClick={handleUploadCert} color="primary">
             Upload
           </Button>
         </DialogActions>
+        {/* <GuidedTour steps={DIALOG_GUIDE_STEPS} /> */}
       </Dialog>
     </div>
   );

@@ -9,7 +9,7 @@ function App() {
 
   const handleSubmission = async (data) => {
     try {
-      // console.log(data["name"], "data")
+      // // console.log(data["name"], "data")
       const formData = new FormData();
       const metadata = JSON.stringify({
         name: data["name"],
@@ -24,7 +24,7 @@ function App() {
       setCid(resData.IpfsHash);
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
