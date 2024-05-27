@@ -4,6 +4,10 @@ import { decode64, encryptData,
  } from "./utils/cryptoFunctions";
 import forge from 'node-forge';
 const API_BASE_URL = process.env.REACT_APP_ENDPOINT;
+console.log(process.env.REACT_APP_PUBLIC_KEY, "=process.env.REACT_APP_PUBLIC_KEY")
+const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY.replace(/\\n/gm, "\n")
+console.log(process.env.REACT_APP_PUBLIC_KEY.replace(/\\n/gm, "\n"))
+
 
 export const getFileContentFromIPFS = async (ipfsHash) => {
   try {
@@ -83,7 +87,7 @@ export const verifySignature = async (signup=false, fileContent, signature, publ
     };
     // console.log(forge.util.encode64(publicKey) , "=publicKey")
     // console.log(body)
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/verifySignature`, {
       method: 'POST',
@@ -120,7 +124,7 @@ export const verifySignatureByDid = async (fileContent, signature, did, data={},
       type: type,
     };
     // console.log(body)
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 // console.log(body, "=body")
     const response = await fetch(`${API_BASE_URL}/verifySignatureByDid`, {
       method: 'POST',
@@ -153,7 +157,7 @@ export const getPublicKeybyDid = async (did) => {
       did: did
     };
 
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/getPublicKeybyDid`, {
       method: 'POST',
@@ -186,7 +190,7 @@ export const getListDataByDid = async (data) => {
     };
 
     // console.log(body)
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/getListDataByDid`, {
       method: 'POST',
@@ -219,7 +223,7 @@ export const getDidByPublicKey = async (publicKey) => {
       publicKey: forge.util.encode64(publicKey)
     };
 
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/getDidByPublicKey`, {
       method: 'POST',
@@ -252,7 +256,7 @@ export const searchByCountryAndSellValue = async (data) => {
      data: data
     };
 
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/searchByCountryAndSellValue`, {
       method: 'POST',
@@ -280,7 +284,7 @@ export const searchByCountryAndSellValue = async (data) => {
 
 
 // export const encryptDataReduce = (data) => {
-//   const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, data);
+//   const bodyEncrypted = encryptData(PUBLIC_KEY, data);
 //   // console.log(bodyEncrypted, "=bodyEncrypted")
 //   return encode64(JSON.stringify(bodyEncrypted));
 // }
@@ -292,7 +296,7 @@ export const getCredential = async (hash) => {
       hash: hash
     };
 
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
     // console.log(bodyEncrypted, "bodyEncrypted")
 
     const response = await fetch(`${API_BASE_URL}/getCredential`, {
@@ -330,7 +334,7 @@ export const getValidationVerifiableCredential = async (hash) => {
     };
 
     // console.log(body, "=body")
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/getValidationVerifiableCredential`, {
       method: 'POST',
@@ -365,7 +369,7 @@ export const getProfileByDid = async (did) => {
       did: did
     };
 
-    const bodyEncrypted = encryptData(process.env.REACT_APP_PUBLIC_KEY, body);
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
 
     const response = await fetch(`${API_BASE_URL}/getProfileByDid`, {
       method: 'POST',

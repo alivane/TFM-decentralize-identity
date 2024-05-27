@@ -1,4 +1,4 @@
-# Step 1: Build the React application
+# Step 1: Build the Expid Application
 FROM node:18.18.2-alpine AS build
 WORKDIR /app
 
