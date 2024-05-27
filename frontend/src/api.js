@@ -5,7 +5,7 @@ import { decode64, encryptData,
 import forge from 'node-forge';
 const API_BASE_URL = process.env.REACT_APP_ENDPOINT;
 console.log(process.env.REACT_APP_PUBLIC_KEY, "=process.env.REACT_APP_PUBLIC_KEY")
-const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY.replace(/\\n/gm, "\n")
+const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY;
 console.log(process.env.REACT_APP_PUBLIC_KEY.replace(/\\n/gm, "\n"))
 
 

@@ -9,6 +9,14 @@ COPY package.json yarn.lock ./
 RUN yarn install
 # Copy all source files
 COPY . ./
+# args
+ARG REACT_APP_PINATA_API_KEY
+ARG REACT_APP_PINATA_API_SECRET
+ARG REACT_APP_PINATA_JWT
+ARG REACT_APP_GATEWAY_URL
+ARG REACT_APP_ENDPOINT
+ARG REACT_APP_PUBLIC_KEY
+ARG REACT_APP_MAPBOX_API_KEY
 # Build the React application
 RUN yarn run build
 
