@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 // Styles
 import "./styles.css";
 // ssh -R 80:localhost:3000 localhost.run
@@ -17,6 +17,7 @@ const QrReader = () => {
   const videoEl = useRef(null);
   const qrBoxEl = useRef(null);
   const [qrOn, setQrOn] = useState(true);
+  const navegate = useNavigate();
 
   // Result
   const [scannedResult, setScannedResult] = useState("");
@@ -78,6 +79,16 @@ const QrReader = () => {
       );
   }, [qrOn]);
 
+
+  useEffect(() => {
+    if (scannedResult) {
+      const scanner = scannedResult.split(window.location.origin);
+      if (scanner.length > 1) {
+        navegate(scanner[1]); // Redirect to the dashboard after login
+      }
+    }
+  }, [scannedResult, navegate])
+
   return (
     <div className="qr-reader">
       {/* QR */}
@@ -95,7 +106,7 @@ const QrReader = () => {
       {/* Show Data Result if scan is success */}
       {scannedResult && (
         <div>
-            <p
+            {/* <p
             style={{
                 position: "absolute",
                 top: 0,
@@ -105,7 +116,7 @@ const QrReader = () => {
             }}
             >
             Scanned Result: {scannedResult}
-            </p>
+            </p> */}
             {/* <Link to={`/verify-credentials/${scannedResult}`} target="_blank">
                 <Typography variant="body2">
                     go to verify
@@ -116,9 +127,9 @@ const QrReader = () => {
                     go to verify
                 </Typography>
             </Link>
-            <p>
+            {/* <p>
                 {scannedResult}
-            </p>
+            </p> */}
         </div>
       )}
     </div>
