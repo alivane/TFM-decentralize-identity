@@ -14,9 +14,9 @@ const test = await DataService.create(
   }
 );
 
-console.log(test, "=test")
+//console.log(test, "=test")
 
 const test1 = await DataService.getByDid("string,");
 const test2 = await DataService.getByPublicKey("public2")
-console.log(test1, "=getByDid")
-console.log(test2, "=ali 2")
+//console.log(test1, "=getByDid")
+//console.log(test2, "=ali 2")

@@ -61,21 +61,27 @@ class DataService {
   }
 
   getByPublicKey(publicKey: string): Promise<IUserData | null> {
+    //console.log(publicKey, "=publicKeypublicKeypublicKeypublicKeypublicKey")
     return new Promise((resolve, reject) => {
       db.once("value", (snapshot) => {
+        let userFound: IUserData | null = null;
+  
         snapshot.forEach((childSnapshot) => {
           const userData: IUserData = childSnapshot.val();
+  
           if (Array.isArray(userData.public_key) && userData.public_key.includes(publicKey)) {
-            resolve(userData);
-            return;
+            userFound = userData;
+            return true; // Breaks the forEach loop
           }
         });
-        resolve(null); // User not found
+  
+        resolve(userFound);
       }, (error) => {
         reject(error); // Error handling
       });
     });
   }
+  
 }
 
 export default new DataService();

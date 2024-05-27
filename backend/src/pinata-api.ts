@@ -24,14 +24,14 @@ export class PinataClient implements PinataAPI {
       try {
           const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });
             const formData = new FormData();
-            formData.append('file', blob, `${name}.json`);
+            formData.append('file', blob, `${name.substring(0,40)}`);
 
           const response = await this.axiosInstance.post('/pinning/pinFileToIPFS', formData, {
               headers: {
                   'Content-Type': 'multipart/form-data'
               }
           });
-          // console.log('File pinned to IPFS:', response.data.ipfsHash);
+          // //console.log('File pinned to IPFS:', response.data.ipfsHash);
           
           return response.data.IpfsHash;
       } catch (error) {
@@ -66,7 +66,7 @@ export class PinataClient implements PinataAPI {
             data.hostnames = [customName];
         }
         const response = await this.axiosInstance.post('/ipns/create', data);
-        console.log('IPNS record created:', response.data);
+        //console.log('IPNS record created:', response.data);
         return response.data.ipns;
     } catch (error) {
         console.error('Error creating IPNS record:', error);
@@ -88,11 +88,11 @@ export class PinataClient implements PinataAPI {
 
 //         // Pin file content to IPFS
 //         const fileHash = await pinataClient.pinFileToIPFS(fileContent);
-//         console.log('File pinned to IPFS:', fileHash);
+//         //console.log('File pinned to IPFS:', fileHash);
 
 //         // Create IPNS record
 //         const ipnsName = await pinataClient.createIPNSRecord(fileHash, "test1");
-//         console.log('IPNS record created:', ipnsName);
+//         //console.log('IPNS record created:', ipnsName);
 //     } catch (error) {
 //         console.error('An error occurred:', error);
 //     }

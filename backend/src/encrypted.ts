@@ -33,7 +33,7 @@ const isValidTimestamp = (timestamp: Date, threshold: number) => {
 
   // Calculate the elapsed time since the timestamp was recorded
   const elapsedTime = currentTime - timestamp.getTime();
-  // console.log(currentTime, timestamp.getTime(), threshold > elapsedTime)
+  // //console.log(currentTime, timestamp.getTime(), threshold > elapsedTime)
 
   return elapsedTime < threshold;
 }
@@ -134,7 +134,7 @@ export const doubleDecrypt = (params: any): any => {
     encryptedIV
   } = params;
 
-  // console.log(encryptedSymmetricKey64, "=params")
+  // //console.log(encryptedSymmetricKey64, "=params")
   
   // Decode the base64-encoded encrypted symmetric key
   // const encryptedSymmetricKey = forge.util.decode64(encryptedSymmetricKey64);
@@ -152,3 +152,11 @@ export const doubleDecrypt = (params: any): any => {
 
 
 // yarn ts-node --esm ./src/server.ts
+
+export const decode64 = (data: string) => {
+  return forge.util.decode64(data);
+}
+
+export const encode64 = (data: string) => {
+  return forge.util.encode64(data);
+}
