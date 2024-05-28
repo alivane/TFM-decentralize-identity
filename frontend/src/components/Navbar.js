@@ -1,14 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem, ListItemIcon, ListItemText, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { Menu as MenuIcon, AccountCircle, Notifications, Settings, Language } from '@mui/icons-material';
 import logo from '../logo.png'; // Import your logo image
+import { clearLocalStorage } from '../utils/utils';
 
 
 function Navbar() {
   const theme = useTheme();
   const color = "#9C27B0";
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navegate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -77,6 +80,16 @@ function Navbar() {
             </Button>
             <Button color="inherit" component={Link} to="/profile">
               Profile
+            </Button>
+            <Button
+              onClick={
+                  () => {
+                    clearLocalStorage();
+                    navegate('/');
+                  }
+              }
+            >
+              Logout
             </Button>
             {/* <IconButton color="inherit">
               <Notifications />

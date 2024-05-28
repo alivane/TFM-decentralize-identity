@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, makeStyles, Button } from '@material-ui/core';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
@@ -26,11 +27,13 @@ const useStyles = makeStyles(() => ({
 
 function UserInfo({ firstName, lastName, email, documentId, onLogout }) {
   const classes = useStyles();
+  const navegate = useNavigate();
 
   const handleLogout = () => {
     // Call the logout function passed as a prop
-    onLogout();
+    // onLogout();
     clearLocalStorage();
+    navegate('/');
   };
 
   return (

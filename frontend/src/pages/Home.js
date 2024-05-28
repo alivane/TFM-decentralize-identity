@@ -4,6 +4,7 @@ import { Button, Container, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 // import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions'; // Import the EmojiEmotions icon
 import Logo from "../components/Logo";
 import GuidedTour from '../components/GuideTour';
@@ -43,6 +44,7 @@ function HomePage() {
         Welcome!
         {/* <EmojiEmotionsIcon className={classes.icon} /> */}
       </Typography>
+
       <Button
         variant="contained"
         color="primary"
@@ -63,7 +65,17 @@ function HomePage() {
       >
         Login
       </Button>
+
+      <Button
+        color="primary"
+        component={Link}
+        to="/scanqr"
+        startIcon={<QrCodeIcon className={classes.icon} />}
+      >
+        Verify Credential 
+      </Button>
       <GuidedTour steps={HOME_STEPS} />
+      
     </Container>
   );
 }

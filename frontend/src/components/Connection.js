@@ -141,7 +141,9 @@ const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleMakeContract} color="primary" variant="contained">
+        <Button 
+          disabled={!location || !selectedTime}
+          onClick={handleMakeContract} color="primary" variant="contained">
           Make Connection
         </Button>
       </DialogActions>

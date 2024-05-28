@@ -158,7 +158,12 @@ function ProcessChallenge(props) {
           setActiveStep(2);
         } catch (error) {
           setVerify({
-            ...{code: VERIFY_CODE_PROCESS[1]},
+            ...{
+              code: VERIFY_CODE_PROCESS[1],
+              data: {
+                fileContent: verify.data.fileContent
+              }
+            },
           });
           setActiveStep(1);
           setErrorResponse(error.toString());
