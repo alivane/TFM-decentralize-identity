@@ -247,6 +247,7 @@ function ProcessChallenge(props) {
 
   const triggerInitProcess = async () => {
     try {
+      setLoading(true);
       const result = await getPublicKeybyDid(did);
       // console.log(result.data.publicKey[0], "=============result.data.publicKey[0]")
       setPublicKey(forge.util.decode64(result.data.publicKey[0]));
@@ -256,6 +257,9 @@ function ProcessChallenge(props) {
       });
     } catch (error) {
       setErrorResponse(error.toString());
+    }
+    finally {
+      setLoading(false);
     }
   }
 
@@ -322,7 +326,7 @@ function ProcessChallenge(props) {
                     </Tooltip>
                   </div>
                   <Button
-                    disabled={!did || did.length < 5}
+                    disabled={!did || did.length < 5 || loading}
                     variant="contained"
                     color="secondary"
                     // className={classes.button}
