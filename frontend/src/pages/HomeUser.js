@@ -54,7 +54,7 @@ function HomeUser() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="I want to offer currency" {...a11yProps(0)} />
-          <Tab label="I want get currency" {...a11yProps(1)} />
+          <Tab label="I want to get currency" {...a11yProps(1)} />
           <Tab label="My currencies" {...a11yProps(2)} />
           <Tab label="My connections" {...a11yProps(3)} />
         </Tabs>

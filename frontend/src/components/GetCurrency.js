@@ -82,7 +82,7 @@ function GetCurrency(props) {
   return (
     <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
       <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }}>
-        I WANT GET CURRENCY
+        I WANT TO GET CURRENCY
       </Typography>
       <Grid item xs={12}>
         <Typography variant="h6" gutterBottom>
