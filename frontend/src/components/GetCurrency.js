@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, OutlinedInput, Grid, MenuItem, Select, FormControl, InputLabel, Typography, Paper } from '@mui/material';
 import { COUNTRIES_LIST, CURRENCY_BY_COUNTRY } from '../utils/constants';
 import { searchByCountryAndSellValue } from '../api';
+import Loader from './Loader';
 
 function GetCurrency(props) {
   const [selectedCurrency, setSelectedCurrency] = useState([]);
@@ -9,6 +10,7 @@ function GetCurrency(props) {
   const [countryInputs, setCountryInputs] = useState({});
   // const [currencyInputs, setCurrencyInputs] = useState({});
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {
     // data, 
@@ -60,6 +62,7 @@ function GetCurrency(props) {
 
     async function fetchData() {
       try {
+        setLoading(true);
         const result = await searchByCountryAndSellValue(
           {
             country: selectedCountry,
@@ -70,6 +73,7 @@ function GetCurrency(props) {
         // console.log(result, "=resultresult")
       } catch (error) {
       } finally {
+        setLoading(false);
       }
     }
     fetchData();
@@ -198,6 +202,11 @@ function GetCurrency(props) {
           </Button>
         </Grid>
       </Grid>
+      {
+        loading && (
+          <Loader />
+        )
+      }
     </Paper>
   );
 }
