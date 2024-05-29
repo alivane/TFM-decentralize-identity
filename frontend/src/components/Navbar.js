@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem, ListItemIcon, ListItemText, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { Menu as MenuIcon, AccountCircle, Notifications, Settings, Language } from '@mui/icons-material';
 import logo from '../logo.png'; // Import your logo image
-import { clearLocalStorage } from '../utils/utils';
+import { clearLocalStorage, loadFromLocalStorage } from '../utils/utils';
+import CopyText from './CopyText';
+import { decode64 } from '../utils/cryptoFunctions';
 
 
 function Navbar() {
@@ -12,6 +14,7 @@ function Navbar() {
   const color = "#9C27B0";
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navegate = useNavigate();
+  const [did, setDid] = useState(null);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -24,6 +27,11 @@ function Navbar() {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    const getDid = loadFromLocalStorage("did");
+    setDid(decode64(getDid));
+  }, []);
+
   return (
     <AppBar position="static" sx={{ color: color, backgroundColor: 'white', borderColor: color }}>
       <Toolbar>
@@ -34,6 +42,9 @@ function Navbar() {
           <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
             <img src={logo} alt="Logo" style={{ width: 100 }} /> {/* Adjust the height as needed */}
           </Link>
+        </Typography>
+        <Typography width={"30%"}>
+          <CopyText text={did}/>
         </Typography>
         {isMobile ? (
           <>

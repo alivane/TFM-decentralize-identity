@@ -25,17 +25,27 @@ function CopyText({ text, length=0 }) {
   return (
     <div
       style={{ 
-        display: "block",
-        overflow: "hidden",
-        textOverflow: "ellipsis"
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
       }}
     >
-      {
-        length > 0 ?
-          `${text.substring(0, length)}...`
-        :
-          `${text}`
-      }
+
+      <div
+        style={{ 
+          display: "block",
+          overflow: "hidden",
+          textOverflow: "ellipsis"
+        }}
+      >
+        {
+          length > 0 ?
+            `${text.substring(0, length)}...`
+          :
+            `${text}`
+        }
+        </div>
+    
       <IconButton
         onClick={handleCopy}
         className={classes.copyButton}

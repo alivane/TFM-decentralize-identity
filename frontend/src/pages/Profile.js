@@ -3,6 +3,7 @@ import { Container, Typography, Paper } from '@material-ui/core';
 import UserInfo from '../components/UserInfo'; // Assuming you have already created the UserInfo component
 import { getProfileByDid } from '../api';
 import { loadFromLocalStorage } from '../utils/utils';
+import Loader from '../components/Loader';
 
 function UserProfile() {
   const [profileData, setProfileData] = useState(null);
@@ -27,7 +28,7 @@ function UserProfile() {
   }, []);
 
   if (loading) {
-    return <Typography>Loading...</Typography>;
+    return <Loader />
   }
 
   if (error) {
