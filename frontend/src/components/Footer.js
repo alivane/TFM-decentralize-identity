@@ -1,27 +1,20 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    // height: "10vh",
-    // backgroundColor: 'rgba(0, 0, 0, 0.54)',
-    // color: '#fff',
-    textAlign: 'center',
-    padding: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-    flexDirection: "column",
-    // top: "100px"
-    // height: "30px",
-    // minHeight: "30px",
-    // backgroundColor: "#000",
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    width: "100vw",
+    textAlign: "center !important",
+    padding: "1% !important",
+    display: "flex !important",
+    justifyContent: "center !important",
+    alignContent: "center !important",
+    flexDirection: "column !important",
+    position: "fixed !important",
+    bottom: "0 !important",
+    left: "0 !important",
+    width: "100vw !important",
   },
   icon: {
     marginRight: "0.5px",
@@ -31,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Footer() {
+const Footer = () => {
   const classes = useStyles();
 
   return (
