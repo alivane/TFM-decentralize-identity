@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     width: '100%',
     height: "100vh",
-    display: "flex!important",
+    display: "flex !important",
     flexDirection: "column",
     justifyContent: "center",
   },
@@ -53,7 +53,16 @@ function ScanQR() {
   const classes = useStyles();
   
   return (
-    <Container className={classes.container} component="main" maxWidth="md">
+    <Container 
+      style={{
+        textAlign: 'center',
+        width: '100%',
+        height: "100vh",
+        display: "flex !important",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+      component="main" maxWidth="md">
       <Logo />
       <Typography variant="h4" className={classes.welcomeText}>
         Welcome!

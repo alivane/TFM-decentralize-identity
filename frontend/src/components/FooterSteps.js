@@ -11,14 +11,14 @@ export default function FooterSteps(props) {
   } = props;
   
   return (
-    <footer>
-      <Stepper activeStep={activeStep} alternativeLabel sx={{mt: 10}}>
+    <div>
+      <Stepper activeStep={activeStep} alternativeLabel sx={{mb: 10}}>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-    </footer>
+    </div>
   );
 }

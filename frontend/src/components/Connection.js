@@ -88,7 +88,7 @@ const CredentialDialog = ({ open, onClose, data, setSuccessResponse }) => {
         register ? (
         <DialogContent>
           <Typography gutterBottom style={{ textAlign: 'center' }}>
-            Please complete this step to make the contract... {activeStep}
+            Step... {activeStep}
           <Button onClick={() => setRegister(false)}>Go Back</Button>
           </Typography>
           <ProcessChallenge

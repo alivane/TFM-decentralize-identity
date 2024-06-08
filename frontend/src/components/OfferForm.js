@@ -142,7 +142,7 @@ function OfferForm() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography gutterBottom style={{ textAlign: 'center' }}>
-                Please complete this step to offer your currencies... {activeStep}
+                Step... {activeStep}
               <Button onClick={() => setRegister(false)}>Go Back</Button>
               </Typography>
               <ProcessChallenge
