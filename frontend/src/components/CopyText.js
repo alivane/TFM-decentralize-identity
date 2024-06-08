@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { IconButton, Snackbar } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+// import { makeStyles } from '@mui/styles';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
-const useStyles = makeStyles((theme) => ({
-  copyButton: {
-    // marginLeft: theme.spacing(1),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   copyButton: {
+//     // marginLeft: theme.spacing(1),
+//   },
+// }));
 
 function CopyText({ text, length=0 }) {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleCopy = () => {
