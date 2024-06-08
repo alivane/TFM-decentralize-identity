@@ -63,10 +63,10 @@ function App() {
 
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <Footer />
             </div>
           </AuthProvider>
         </Router>
+        <Footer />
       </ThemeProvider>
 
   );
