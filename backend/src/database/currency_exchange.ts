@@ -80,6 +80,24 @@ class DataService {
       });
     });
   }
+
+  deleteByDID(did: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      exchangesDb.orderByChild('did_subject').equalTo(did).once('value', (snapshot) => {
+        const updates: { [key: string]: null } = {};
+  
+        snapshot.forEach((childSnapshot) => {
+          updates[childSnapshot.key as string] = null;
+        });
+  
+        exchangesDb.update(updates)
+          .then(() => resolve())
+          .catch((error) => reject(error));
+      }, (error) => {
+        reject(error); // Error handling
+      });
+    });
+  }
 }
 
 export default new DataService();

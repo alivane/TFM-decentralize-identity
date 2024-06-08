@@ -22,6 +22,8 @@ import {
   getCurrenciesByDid,
   createContractCurrency,
   getProfileByDid,
+  deleteProfile,
+  updateUserInfo,
   getContractsByDID
  } from "./verification.js"
 import createCredentials from "./create-credential.js";
@@ -304,6 +306,54 @@ app.post('/getProfileByDid', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/deleteProfile', async (req: Request, res: Response) => {
+  try {
+    // // Get encryptedSymmetricKey and encryptedData from req.body
+    const { key, data, iv } = req.body;
+    // Check if encryptedSymmetricKey and encryptedData are present
+    if (!key || !iv || !data) {
+      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+    }
+
+    const message_decrypted = doubleDecrypt({ 
+      privateKey: APP_PRIVATE_KEY, 
+      encryptedSymmetricKey: key, 
+      encryptedData: data, 
+      encryptedIV: iv 
+    })
+    const result = await deleteProfile(message_decrypted);
+
+    return res.status(result[0] as number).json(result[1]);
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+app.post('/updateUserInfo', async (req: Request, res: Response) => {
+  try {
+    // // Get encryptedSymmetricKey and encryptedData from req.body
+    const { key, data, iv } = req.body;
+    // Check if encryptedSymmetricKey and encryptedData are present
+    if (!key || !iv || !data) {
+      return res.status(400).json({ success: false, message: 'Missing required parameters' });
+    }
+
+    const message_decrypted = doubleDecrypt({ 
+      privateKey: APP_PRIVATE_KEY, 
+      encryptedSymmetricKey: key, 
+      encryptedData: data, 
+      encryptedIV: iv 
+    })
+    const result = await updateUserInfo(message_decrypted);
+
+    return res.status(result[0] as number).json(result[1]);
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
 
 // Endpoint to verify signature and decrypt data
 app.post('/searchByCountryAndSellValue', async (req: Request, res: Response) => {
@@ -443,7 +493,7 @@ app.post('/getValidationVerifiableCredential', async (req: Request, res: Respons
     //console.log("Loading....", message_decrypted.hash)
     const data_credential = JSON.parse(decode64(message_decrypted.hash));
     
-    //console.log(data_credential, "=hashCredential")
+    // console.log(data_credential, "=hashCredential")
 
     const check = await checkVerifyCredential(data_credential.credential);
 
@@ -451,11 +501,24 @@ app.post('/getValidationVerifiableCredential', async (req: Request, res: Respons
       //console.log("was not checked")
     }
     // console.log(data_credential.share, data_credential.credential.credentialSubject, "=")
-    const result = getSpecificFields(
+    const result_credential = getSpecificFields(
       data_credential.share,
       data_credential.credential.credentialSubject
     )
 
+    // console.log(result_credential, "=result");
+    // console.log(data_credential)
+    const user: any = await getProfileByDid({did: data_credential.did});
+    // console.log(decode64(user[1].data), "====user");
+    const result_user = getSpecificFields(
+      data_credential.share,
+      JSON.parse(decode64(user[1].data))
+    )
+    // console.log(result_user, "result_user")
+    const result = {
+      ...result_credential, ...result_user
+    }
+    // console.log(result, "=resulta")
     //console.log(check, "==========check", result)
     // const credentialData = await getVerifyCredential(hashCredential);
 

@@ -73,8 +73,11 @@ export const getDidByPublicKey =  async (message_decrypted: any) => {
 
 export const getProfileByDid =  async (message_decrypted: any) => {
   // VALIDATE IF PUBLIC KEY IS already REGISTRATED
-  const data = await DataService.getByDid(decode64(message_decrypted.did));
-  //console.log(data, "=message_decrypted", message_decrypted)
+  const did = decode64(message_decrypted.did);
+  // console.log(did, "did")
+  // const data = await DataService.getByDid();
+  const data = await DataService.getByDid(did);
+  // console.log(data, "=message_decrypted", message_decrypted)
   
   if (!data) {
     return [400, { success: false, message: 'The user is not exist' }];
@@ -94,6 +97,54 @@ export const getProfileByDid =  async (message_decrypted: any) => {
   ];
 };
 
+export const deleteProfile =  async (message_decrypted: any) => {
+  // VALIDATE IF PUBLIC KEY IS already REGISTRATED
+  // const data = await DataService.getByDid(decode64(message_decrypted.did));
+  const did = decode64(message_decrypted.did);
+  const data = await DataService.getByDid(did);
+  if (!data) {
+    return [400, { success: false, message: 'The user is not exist' }];
+  }
+
+  await DataService.delete(did);
+  await DataServiceContractCurrencies.deleteByDID(did);
+  await DataServiceCurrencyExchange.deleteByDID(did);
+  
+  return [
+    200, 
+    { 
+      success: true, 
+      message: 'User Deleted',
+      data: []
+    },
+  ];
+};
+
+
+export const updateUserInfo =  async (message_decrypted: any) => {
+  // VALIDATE IF PUBLIC KEY IS already REGISTRATED
+  // const data = await DataService.getByDid(decode64(message_decrypted.did));
+  const did = decode64(message_decrypted.data.did);
+  const data = await DataService.getByDid(did);
+  if (!data) {
+    return [400, { success: false, message_decrypted: 'The user is not exist' }];
+  }
+
+  await DataService.updateFieldByDid(
+    did,
+    message_decrypted.data.field,
+    message_decrypted.data.value
+  );
+  
+  return [
+    200, 
+    { 
+      success: true, 
+      message: 'User Info Updated',
+      data: []
+    },
+  ];
+};
 
 export const createDidUser = async (message_decrypted: any) => {
   // ADD THE DID HERE

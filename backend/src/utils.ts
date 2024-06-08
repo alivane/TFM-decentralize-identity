@@ -6,9 +6,13 @@ export const getSpecificFields = (data: any, dataFrom: any) => {
   //console.log(data, "====data")
   //console.log(dataFrom, "data from ====")
     let response: any = {};
+    // console.log(data, "=field")
     for (let index in data) {
+      // console.log(index, data)
       const field: string = data[index];
-      response[field] = dataFrom[field]; 
+      if (field in dataFrom) {
+        response[field] = dataFrom[field]; 
+      }
     }
 
     return response

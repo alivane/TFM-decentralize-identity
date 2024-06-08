@@ -82,6 +82,25 @@ class DataService {
     });
   }
   
+  updateFieldByDid(did: string, field: string, value: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      db.orderByChild("did").equalTo(did).once("value", (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          childSnapshot.ref.update({ [field]: value }, (error) => {
+            if (error) {
+              reject(error); // Error handling
+            } else {
+              resolve(); // Success
+            }
+          });
+          return true; // Breaks the forEach loop
+        });
+        resolve(); // Resolve if user not found (no update made)
+      }, (error) => {
+        reject(error); // Error handling
+      });
+    });
+  }
 }
 
 export default new DataService();
