@@ -50,7 +50,7 @@ function HomeUser() {
   };
   
   return (
-    <Box sx={{ width: '100%', height: "80vh", }}>
+    <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="I want to offer currency" {...a11yProps(0)} />

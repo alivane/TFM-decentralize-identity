@@ -28,14 +28,38 @@ const Footer = () => {
   const classes = useStyles();
 
   return (
-    <footer className={classes.footer}>
-      <p>&copy; {new Date().getFullYear()} Expid Application. All Rights Reserved.</p>
-      <p>
-        <Link href="https://github.com/alivane/TFM-decentralize-identity" target="_blank" rel="noopener noreferrer" color="inherit">
-          <GitHubIcon className={classes.icon} /> GitHub
-        </Link>
-      </p>
-    </footer>
+    <div
+      // style={{
+      //   textAlign: "center !important",
+      //   padding: "1% !important",
+      //   display: "flex !important",
+      //   justifyContent: "center !important",
+      //   alignContent: "center !important",
+      //   flexDirection: "column !important",
+      //   position: "fixed !important",
+      //   bottom: "0 !important",
+      //   left: "0 !important",
+      //   width: "100vw !important",
+      // }}
+      style={{ 
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        bottom: 0,
+        left: 0,
+        position: "fixed",
+        width: "100vw"
+      }}
+    >
+
+        <p>&copy; {new Date().getFullYear()} Expid Application. All Rights Reserved.</p>
+        <p>
+          <Link href="https://github.com/alivane/TFM-decentralize-identity" target="_blank" rel="noopener noreferrer" color="inherit">
+            <GitHubIcon className={classes.icon} /> GitHub
+          </Link>
+        </p>
+    </div>
   );
 }
 
