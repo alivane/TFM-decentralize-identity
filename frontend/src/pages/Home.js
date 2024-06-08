@@ -38,7 +38,17 @@ function HomePage() {
   const homeClasses = useStyles();
 
   return (
-    <Container className={homeClasses.container} component="main" maxWidth="md">
+    <Container 
+    style={{
+      width: '100%',
+      height: "100vh",
+      display: "flex",
+      textAlign: 'center',
+      flexDirection: "column",
+      justifyContent: "center"
+    }}
+    
+    component="main" maxWidth="md">
       <Logo />
       <Typography variant="h4" className={homeClasses.welcomeText}>
         Welcome!
