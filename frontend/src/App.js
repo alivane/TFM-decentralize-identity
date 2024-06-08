@@ -14,6 +14,8 @@ import ScanQr from './pages/ScanQR';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PrivateRoute from "./components/PrivateRoute";
 import { AuthProvider } from './components/AuthContext';
+import Footer from './components/Footer';
+import EditUser from './components/EditUserInfo';
 
 const theme = createTheme();
 // const useStyles = makeStyles((theme) => ({
@@ -55,12 +57,16 @@ function App() {
                     <PrivateRoute isAuthenticated={true} element={Profile} 
                   />}
                 />
+                <Route path="/edit-user/:field" element={
+                  <PrivateRoute isAuthenticated={true} element={EditUser} />
+                } /> 
 
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
           </AuthProvider>
         </Router>
+        <Footer />
       </ThemeProvider>
 
   );

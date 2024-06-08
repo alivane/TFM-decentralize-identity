@@ -12,6 +12,7 @@ import { encode64 } from '../utils/cryptoFunctions';
 import Loader from './Loader';
 import ErrorComponent from "../components/ErrorComponent";
 import CheckboxSelectorVC from './CheckboxSelectorVC';
+import { loadFromLocalStorage } from '../utils/utils';
 // import pako from 'pako';
 // import ReaderQr from "./ReaderQR";
 
@@ -46,8 +47,11 @@ const QRCodeDisplay = ({ open, onClose, data, fieldsVC, idVC }) => {
   
       const credential = {
         credential_id: id_credential,
-        share: fields
+        share: fields,
+        did: loadFromLocalStorage("did")
       }
+
+      // console.log(credential, "=credential")
       
       // console.log(data, "=data")
       const url = `${window.location.origin}/verify-credentials/${encode64(JSON.stringify(credential))}`

@@ -58,15 +58,22 @@ const renderTypographyFromJSON = (data) => {
             isSingleWord(key, "did_seller")
           ) ? (
             <div>
-              {NAME_FIELDS_VC[key]}:
+              <Typography sx={{ fontWeight: 'bold' }}>{NAME_FIELDS_VC[key]}: </Typography>
               <CopyText text={`${value}`} />
             </div>
            
             
           ) : (
           
-            `${NAME_FIELDS_VC[key]}: ${value}`
-          
+            <div style={{
+              display: "flex",
+              justifyContent: "center"
+            }}>
+              <Typography sx={{ fontWeight: 'bold' }}>
+              {NAME_FIELDS_VC[key]}: 
+              </Typography>
+              {value}
+            </div>
           )
         }
       </Typography>
@@ -93,7 +100,8 @@ function VerifyCredentials() {
           
           const params = {
             credential: credential.data,
-            share: hash.share
+            share: hash.share,
+            did: hash.did
           }
           // console.log(credential, "===credential", credential);
 

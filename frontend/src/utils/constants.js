@@ -375,6 +375,10 @@ export const CURRENCY_BY_COUNTRY = [
 
 
 export const NAME_FIELDS_VC = {
+  name: "Name",
+  phone: "Phone",
+  email: "Email",
+  document_id: "Document Number",
   country_of_exchange: "Country of Exchange",
   currency_cost: "Currency Cost",
   currency_cost_value: "Currency Cost Value",
@@ -391,6 +395,10 @@ export const NAME_FIELDS_VC = {
 
 
 export const NAME_FIELDS_SELLER = {
+  name: "Name",
+  phone: "Phone",
+  email: "Email",
+  document_id: "Document Number",
   country_of_exchange: "Country of Exchange",
   currency_cost: "Currency Cost",
   currency_cost_value: "Currency Cost Value",
@@ -401,6 +409,10 @@ export const NAME_FIELDS_SELLER = {
 
 
 export const NAME_FIELDS_BUYER = {
+  name: "Name",
+  phone: "Phone",
+  email: "Email",
+  document_id: "Document Number",
   country_of_exchange: "Country of Exchange",
   currency_cost: "Currency Cost",
   currency_cost_value: "Currency Cost Value",
@@ -411,5 +423,5 @@ export const NAME_FIELDS_BUYER = {
   // id_credential_seller: "Seller Credential ID",
   location: "Location",
   message_to_seller: "Message to Seller",
-  time: "Time"
+  time: "Time",
 };

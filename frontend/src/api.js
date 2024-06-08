@@ -388,16 +388,87 @@ export const getProfileByDid = async (did) => {
     }
 
     const dataDecode = JSON.parse(decode64(result.data));
-    console.log("result", {
-      data: {
-        ...dataDecode
-      },
+    // console.log("result", {
+    //   data: {
+    //     ...dataDecode
+    //   },
   
-    })
+    // })
     return {
       data: {
         ...dataDecode
       },
+      success: result.success,
+      message: result.message
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+export const deleteProfile = async (did) => {
+  try {
+    
+    const body = {
+      did: did
+    };
+
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/deleteProfile`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+
+    return {
+      success: result.success,
+      message: result.message
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const updateUserInfo = async (data) => {
+  try {
+    
+    const body = {
+      data: data
+    };
+
+    const bodyEncrypted = encryptData(PUBLIC_KEY, body);
+
+    const response = await fetch(`${API_BASE_URL}/updateUserInfo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...bodyEncrypted}),
+    });
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+    if (!response.ok) {
+      throw new Error('Failed to fetch encrypted data');
+    }
+
+    return {
       success: result.success,
       message: result.message
     };
