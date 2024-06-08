@@ -35,33 +35,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HomePage() {
-  const classes = useStyles();
+  const homeClasses = useStyles();
 
   return (
-    <Container className={classes.container} component="main" maxWidth="md">
+    <Container className={homeClasses.container} component="main" maxWidth="md">
       <Logo />
-      <Typography variant="h4" className={classes.welcomeText}>
+      <Typography variant="h4" className={homeClasses.welcomeText}>
         Welcome!
-        {/* <EmojiEmotionsIcon className={classes.icon} /> */}
+        {/* <EmojiEmotionsIcon className={homeClasses.icon} /> */}
       </Typography>
 
       <Button
         variant="contained"
         color="primary"
-        className={`${classes.button} create_account_button`}
+        className={`${homeClasses.button} create_account_button`}
         component={Link}
         to="/signup"
-        startIcon={<AccountCircleIcon className={classes.icon} />}
+        startIcon={<AccountCircleIcon className={homeClasses.icon} />}
       >
         Create an Account
       </Button>
       <Button
         variant="contained"
         color="secondary"
-        className={`${classes.button} login_button`}
+        className={`${homeClasses.button} login_button`}
         component={Link}
         to="/signin"
-        startIcon={<LockOpenIcon className={classes.icon} />}
+        startIcon={<LockOpenIcon className={homeClasses.icon} />}
       >
         Login
       </Button>
@@ -70,7 +70,7 @@ function HomePage() {
         color="primary"
         component={Link}
         to="/scanqr"
-        startIcon={<QrCodeIcon className={classes.icon} />}
+        startIcon={<QrCodeIcon className={homeClasses.icon} />}
       >
         Verify Credential 
       </Button>

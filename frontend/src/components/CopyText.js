@@ -48,7 +48,7 @@ function CopyText({ text, length=0 }) {
     
       <IconButton
         onClick={handleCopy}
-        className={classes.copyButton}
+        // className={classes.copyButton}
         aria-label="copy"
       >
         <FileCopyIcon />
