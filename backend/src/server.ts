@@ -449,7 +449,7 @@ app.post('/getCredential', async (req: Request, res: Response) => {
       encryptedIV: iv 
     })
 
-    //console.log("Loading....")
+    console.log("Loading.... getcredentials", message_decrypted )
     const hashCredential = message_decrypted.hash;
     const credentialData = await getVerifyCredential(hashCredential);
 
@@ -489,6 +489,7 @@ app.post('/getValidationVerifiableCredential', async (req: Request, res: Respons
       encryptedData: data, 
       encryptedIV: iv 
     })
+    console.log("Loading getValidationVerifiableCredential... ", message_decrypted)
 
     //console.log("Loading....", message_decrypted.hash)
     const data_credential = JSON.parse(decode64(message_decrypted.hash));
